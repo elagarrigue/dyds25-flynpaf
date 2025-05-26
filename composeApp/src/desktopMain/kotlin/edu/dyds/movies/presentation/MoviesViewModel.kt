@@ -19,7 +19,7 @@ class MoviesViewModel(
     private val tmdbHttpClient: HttpClient,
 ) : ViewModel() {
 
-    private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
+    private val popularMovieGetter: GetPopularMoviesUseCase = GetPopularMoviesUseCase(tmdbHttpClient)
 
     private val moviesStateMutableStateFlow = MutableStateFlow(MoviesUiState())
 
@@ -37,10 +37,21 @@ class MoviesViewModel(
             moviesStateMutableStateFlow.emit(
                 MoviesUiState(
                     isLoading = false,
-                    movies = getPopularMovies().sortAndMap()
+                    movies = popularMovieGetter.getPopularMovies().sortAndMap()
                 )
             )
         }
+    }
+
+    private fun List<RemoteMovie>.sortAndMap(): List<QualifiedMovie> {
+        return this
+            .sortedByDescending { it.voteAverage }
+            .map {
+                QualifiedMovie(
+                    movie = it.toDomainMovie(),
+                    isGoodMovie = it.voteAverage >= MIN_VOTE_AVERAGE
+                )
+            }
     }
 
     fun getMovieDetail(id: Int) {
@@ -57,36 +68,7 @@ class MoviesViewModel(
         }
     }
 
-    private suspend fun getPopularMovies() =
-        if (cacheMovies.isNotEmpty()) {
-            cacheMovies
-        } else initializeMovieCache()
 
-
-    private suspend fun initializeMovieCache(): List<RemoteMovie> =
-        try {
-        initializeMovieCacheUnsafe()
-    } catch (e: Exception) {
-        emptyList()
-    }
-
-    private suspend fun initializeMovieCacheUnsafe(): List<RemoteMovie> =
-        getTMDBPopularMovies().results.apply {
-        cacheMovies.clear()
-        cacheMovies.addAll(this)
-    }
-
-
-    private fun List<RemoteMovie>.sortAndMap(): List<QualifiedMovie> {
-        return this
-            .sortedByDescending { it.voteAverage }
-            .map {
-                QualifiedMovie(
-                    movie = it.toDomainMovie(),
-                    isGoodMovie = it.voteAverage >= MIN_VOTE_AVERAGE
-                )
-            }
-    }
 
     private suspend fun getMovieDetails(id: Int) =
         try {
@@ -99,9 +81,6 @@ class MoviesViewModel(
         tmdbHttpClient.get("/3/movie/$id").body()
 
 
-    private suspend fun getTMDBPopularMovies(): RemoteResult =
-        tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
-
     data class MoviesUiState(
         val isLoading: Boolean = false,
         val movies: List<QualifiedMovie> = emptyList(),
@@ -111,4 +90,33 @@ class MoviesViewModel(
         val isLoading: Boolean = false,
         val movie: Movie? = null,
     )
+}
+
+public class GetPopularMoviesUseCase(
+    private val tmdbHttpClient: HttpClient,
+){
+    private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
+
+    suspend fun getPopularMovies() =
+        if (cacheMovies.isNotEmpty()) {
+            cacheMovies
+        } else initializeMovieCache()
+
+
+    private suspend fun initializeMovieCache(): List<RemoteMovie> =
+        try {
+            initializeMovieCacheUnsafe()
+        } catch (e: Exception) {
+            emptyList()
+        }
+
+    private suspend fun initializeMovieCacheUnsafe(): List<RemoteMovie> =
+        getTMDBPopularMovies().results.apply {
+            cacheMovies.clear()
+            cacheMovies.addAll(this)
+        }
+
+    private suspend fun getTMDBPopularMovies(): RemoteResult =
+        tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
+
 }
