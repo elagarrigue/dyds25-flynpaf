@@ -60,16 +60,22 @@ class MoviesViewModel(
     private suspend fun getPopularMovies() =
         if (cacheMovies.isNotEmpty()) {
             cacheMovies
-        } else {
-            try {
-                getTMDBPopularMovies().results.apply {
-                    cacheMovies.clear()
-                    cacheMovies.addAll(this)
-                }
-            } catch (e: Exception) {
-                emptyList()
-            }
-        }
+        } else initializeMovieCache()
+
+
+    private suspend fun initializeMovieCache(): List<RemoteMovie> =
+        try {
+        initializeMovieCacheUnsafe()
+    } catch (e: Exception) {
+        emptyList()
+    }
+
+    private suspend fun initializeMovieCacheUnsafe(): List<RemoteMovie> =
+        getTMDBPopularMovies().results.apply {
+        cacheMovies.clear()
+        cacheMovies.addAll(this)
+    }
+
 
     private fun List<RemoteMovie>.sortAndMap(): List<QualifiedMovie> {
         return this
