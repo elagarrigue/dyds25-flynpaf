@@ -30,17 +30,20 @@ import edu.dyds.movies.presentation.utils.LoadingIndicator
 import edu.dyds.movies.presentation.utils.NoResults
 import org.jetbrains.compose.resources.stringResource
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(viewModel: MoviesViewModel, id: Int, onBack: () -> Unit) {
-
-    val state by viewModel.movieDetailStateFlow.collectAsState(MoviesViewModel.MovieDetailUiState())
-
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     LaunchedEffect(Unit) {
         viewModel.getMovieDetail(id)
     }
+    DetailContent(viewModel,id,onBack)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DetailContent(viewModel: MoviesViewModel, id: Int, onBack: () -> Unit){
+    val state by viewModel.movieDetailStateFlow.collectAsState(MoviesViewModel.MovieDetailUiState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
     MaterialTheme {
         Surface {
@@ -63,6 +66,7 @@ fun DetailScreen(viewModel: MoviesViewModel, id: Int, onBack: () -> Unit) {
             }
         }
     }
+
 }
 
 @Composable
@@ -139,3 +143,5 @@ private fun DetailTopBar(
         scrollBehavior = scrollBehavior
     )
 }
+
+
