@@ -2,6 +2,9 @@ package edu.dyds.movies.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCaseImpl
+import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
+import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCaseImpl
 import edu.dyds.movies.presentation.MoviesViewModel
 import io.ktor.client.*
 import io.ktor.client.plugins.*
@@ -35,6 +38,6 @@ object MoviesDependencyInjector {
 
     @Composable
     fun getMoviesViewModel(): MoviesViewModel {
-        return viewModel { MoviesViewModel(tmdbHttpClient) }
+        return viewModel { MoviesViewModel(GetPopularMoviesUseCaseImpl(tmdbHttpClient), GetMovieDetailsUseCaseImpl(tmdbHttpClient))}
     }
 }

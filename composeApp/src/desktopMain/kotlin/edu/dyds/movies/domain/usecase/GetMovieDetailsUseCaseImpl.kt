@@ -5,10 +5,15 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-public class GetMovieDetailsUseCase(
+
+interface GetMovieDetailsUseCase{
+    suspend fun getMovieDetails(id: Int): RemoteMovie?
+}
+
+class GetMovieDetailsUseCaseImpl(
     private val tmdbHttpClient: HttpClient
-){
-    suspend fun getMovieDetails(id: Int) =
+): GetMovieDetailsUseCase{
+    override suspend fun getMovieDetails(id: Int) =
         try {
             getTMDBMovieDetails(id)
         } catch (e: Exception) {

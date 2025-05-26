@@ -6,12 +6,16 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-public class GetPopularMoviesUseCase(
+interface GetPopularMoviesUseCase{
+    suspend fun getPopularMovies():List<RemoteMovie>
+}
+
+public class GetPopularMoviesUseCaseImpl(
     private val tmdbHttpClient: HttpClient
-){
+): GetPopularMoviesUseCase{
     private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
 
-    suspend fun getPopularMovies() =
+    override suspend fun getPopularMovies() =
         if (cacheMovies.isNotEmpty()) {
             cacheMovies
         } else initializeMovieCache()
