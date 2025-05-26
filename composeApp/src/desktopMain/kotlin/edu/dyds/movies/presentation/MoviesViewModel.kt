@@ -5,10 +5,9 @@ import androidx.lifecycle.viewModelScope
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.domain.entity.RemoteMovie
-import edu.dyds.movies.domain.entity.RemoteResult
+import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
+import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
 import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.request.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +15,7 @@ import kotlinx.coroutines.launch
 private const val MIN_VOTE_AVERAGE = 6.0
 
 class MoviesViewModel(
-    private val tmdbHttpClient: HttpClient,
+    tmdbHttpClient: HttpClient,
 ) : ViewModel() {
 
     private val popularMovieGetter: GetPopularMoviesUseCase = GetPopularMoviesUseCase(tmdbHttpClient)
@@ -81,46 +80,4 @@ class MoviesViewModel(
     )
 }
 
-public class GetPopularMoviesUseCase(
-    private val tmdbHttpClient: HttpClient
-){
-    private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
 
-    suspend fun getPopularMovies() =
-        if (cacheMovies.isNotEmpty()) {
-            cacheMovies
-        } else initializeMovieCache()
-
-
-    private suspend fun initializeMovieCache(): List<RemoteMovie> =
-        try {
-            initializeMovieCacheUnsafe()
-        } catch (e: Exception) {
-            emptyList()
-        }
-
-    private suspend fun initializeMovieCacheUnsafe(): List<RemoteMovie> =
-        getTMDBPopularMovies().results.apply {
-            cacheMovies.clear()
-            cacheMovies.addAll(this)
-        }
-
-    private suspend fun getTMDBPopularMovies(): RemoteResult =
-        tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
-
-}
-
-
-public class GetMovieDetailsUseCase(
-    private val tmdbHttpClient: HttpClient
-){
-    suspend fun getMovieDetails(id: Int) =
-        try {
-            getTMDBMovieDetails(id)
-        } catch (e: Exception) {
-            null
-        }
-
-    private suspend fun getTMDBMovieDetails(id: Int): RemoteMovie =
-        tmdbHttpClient.get("/3/movie/$id").body()
-}
