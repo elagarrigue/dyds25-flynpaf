@@ -20,7 +20,7 @@ import coil3.compose.AsyncImage
 import dydsproject.composeapp.generated.resources.Res
 import dydsproject.composeapp.generated.resources.app_name
 import dydsproject.composeapp.generated.resources.error
-import edu.dyds.movies.domain.MoviesViewModel
+import edu.dyds.movies.presentation.MoviesViewModel
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.presentation.utils.LoadingIndicator

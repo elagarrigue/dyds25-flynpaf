@@ -2,7 +2,7 @@ package edu.dyds.movies.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import edu.dyds.movies.domain.MoviesViewModel
+import edu.dyds.movies.presentation.MoviesViewModel
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
