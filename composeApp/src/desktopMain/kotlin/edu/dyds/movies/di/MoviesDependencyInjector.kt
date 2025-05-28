@@ -2,6 +2,7 @@ package edu.dyds.movies.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCaseImpl
 import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
 import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCaseImpl
@@ -38,6 +39,8 @@ object MoviesDependencyInjector {
 
     @Composable
     fun getMoviesViewModel(): MoviesViewModel {
-        return viewModel { MoviesViewModel(GetPopularMoviesUseCaseImpl(tmdbHttpClient), GetMovieDetailsUseCaseImpl(tmdbHttpClient))}
+        val getPopularMoviesUseCase:GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(tmdbHttpClient)
+        val getMovieDetailsUseCase:GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(tmdbHttpClient)
+        return viewModel { MoviesViewModel(getPopularMoviesUseCase, getMovieDetailsUseCase)}
     }
 }

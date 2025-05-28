@@ -10,7 +10,7 @@ interface GetPopularMoviesUseCase{
     suspend fun getPopularMovies():List<RemoteMovie>
 }
 
-public class GetPopularMoviesUseCaseImpl(
+class GetPopularMoviesUseCaseImpl(
     private val tmdbHttpClient: HttpClient
 ): GetPopularMoviesUseCase{
     private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
