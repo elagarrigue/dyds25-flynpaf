@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
-import edu.dyds.movies.domain.entity.RemoteMovie
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
 import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
+import edu.dyds.movies.domain.usecase.sortAndMap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-private const val MIN_VOTE_AVERAGE = 6.0
+
 
 class MoviesViewModel(
     private val popularMovieGetter: GetPopularMoviesUseCase,
@@ -38,17 +38,6 @@ class MoviesViewModel(
                 )
             )
         }
-    }
-
-    private fun List<RemoteMovie>.sortAndMap(): List<QualifiedMovie> {
-        return this
-            .sortedByDescending { it.voteAverage }
-            .map {
-                QualifiedMovie(
-                    movie = it.toDomainMovie(),
-                    isGoodMovie = it.voteAverage >= MIN_VOTE_AVERAGE
-                )
-            }
     }
 
     fun getMovieDetail(id: Int) {
