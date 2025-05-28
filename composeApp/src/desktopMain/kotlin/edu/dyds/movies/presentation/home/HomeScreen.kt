@@ -33,7 +33,6 @@ fun HomeScreen(
     viewModel: MoviesViewModel,
     onGoodMovieClick: (Movie) -> Unit
 ) {
-
     LaunchedEffect(Unit) {
         viewModel.getAllMovies()
     }
@@ -44,23 +43,38 @@ fun HomeScreen(
         Surface {
             val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
             Scaffold(
-                topBar = {
-                    TopAppBar(
-                        { Text(stringResource(Res.string.app_name)) },
-                        scrollBehavior = scrollBehavior
-                    )
-                },
+                topBar = { functionTopBar(scrollBehavior) },
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             ) { padding ->
-
-                LoadingIndicator(state.isLoading)
-
-                when {
-                    state.movies.isNotEmpty() -> MovieGrid(padding, state.movies, onGoodMovieClick)
-                    state.isLoading.not() -> NoResults { viewModel.getAllMovies() }
+                    functionHomeState(padding, state, viewModel, onGoodMovieClick)
                 }
             }
         }
+    }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun functionTopBar(scrollBehavior: TopAppBarScrollBehavior){
+    TopAppBar(
+        { Text(stringResource(Res.string.app_name)) },
+        scrollBehavior = scrollBehavior
+    )
+}
+
+
+@Composable
+private fun functionHomeState(
+    padding: PaddingValues,
+    state: MoviesViewModel.MoviesUiState,
+    viewModel: MoviesViewModel,
+    onGoodMovieClick: (Movie) -> Unit
+){
+    LoadingIndicator(state.isLoading)
+
+    when {
+        state.movies.isNotEmpty() -> MovieGrid(padding, state.movies, onGoodMovieClick)
+        state.isLoading.not() -> NoResults { viewModel.getAllMovies() }
     }
 }
 
