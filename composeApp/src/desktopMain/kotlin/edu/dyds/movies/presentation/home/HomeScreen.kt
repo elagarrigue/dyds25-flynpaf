@@ -20,7 +20,6 @@ import coil3.compose.AsyncImage
 import dydsproject.composeapp.generated.resources.Res
 import dydsproject.composeapp.generated.resources.app_name
 import dydsproject.composeapp.generated.resources.error
-import edu.dyds.movies.presentation.MoviesViewModel
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.entity.QualifiedMovie
 import edu.dyds.movies.presentation.utils.LoadingIndicator
@@ -30,14 +29,14 @@ import org.jetbrains.compose.resources.stringResource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: MoviesViewModel,
+    viewModel: HomeScreenViewModel,
     onGoodMovieClick: (Movie) -> Unit
 ) {
     LaunchedEffect(Unit) {
         viewModel.getAllMovies()
     }
 
-    val state by viewModel.moviesStateFlow.collectAsState(MoviesViewModel.MoviesUiState())
+    val state by viewModel.moviesStateFlow.collectAsState(HomeScreenViewModel.MoviesUiState())
 
     MaterialTheme {
         Surface {
@@ -63,11 +62,11 @@ private fun functionTopBar(scrollBehavior: TopAppBarScrollBehavior){
 }
 
 
-@Composable
+    @Composable
 private fun functionHomeState(
     padding: PaddingValues,
-    state: MoviesViewModel.MoviesUiState,
-    viewModel: MoviesViewModel,
+    state: HomeScreenViewModel.MoviesUiState,
+    viewModel: HomeScreenViewModel,
     onGoodMovieClick: (Movie) -> Unit
 ){
     LoadingIndicator(state.isLoading)
