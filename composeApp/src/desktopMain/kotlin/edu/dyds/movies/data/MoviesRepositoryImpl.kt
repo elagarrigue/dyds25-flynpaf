@@ -1,4 +1,9 @@
-package edu.dyds.movies.data;
+package edu.dyds.movies.data
 
-public class MoviesRepositoryImpl {
+import edu.dyds.movies.domain.repository.MoviesRepository
+
+class MoviesRepositoryImpl : MoviesRepository {
+    override suspend fun getMovieByid(id: Int) {
+        TODO("Not yet implemented")
+    }
 }
