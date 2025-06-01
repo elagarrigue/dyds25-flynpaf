@@ -2,6 +2,8 @@ package edu.dyds.movies.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import edu.dyds.movies.data.MoviesRepositoryImpl
+import edu.dyds.movies.domain.repository.MoviesRepository
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCaseImpl
 import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
@@ -38,15 +40,22 @@ object MoviesDependencyInjector {
             }
         }
 
+    private var repository: MoviesRepository? = null
+
     @Composable
     fun getHomeScreenViewModel(): HomeScreenViewModel{
-        val getPopularMoviesUseCase:GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(tmdbHttpClient)
+        val getPopularMoviesUseCase:GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(getRepository())
         return viewModel { HomeScreenViewModel(getPopularMoviesUseCase)}
     }
 
     @Composable
     fun getDetailScreenViewModel(): DetailScreenViewModel {
-        val getMovieDetailsUseCase:GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(tmdbHttpClient)
+        val getMovieDetailsUseCase:GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(getRepository())
         return viewModel { DetailScreenViewModel( getMovieDetailsUseCase)}
+    }
+
+    private fun getRepository(): MoviesRepository{
+        repository= repository ?: MoviesRepositoryImpl(tmdbHttpClient)
+        return repository!!
     }
 }
