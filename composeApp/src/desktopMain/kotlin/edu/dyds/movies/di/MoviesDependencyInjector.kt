@@ -2,7 +2,12 @@ package edu.dyds.movies.di
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import edu.dyds.movies.presentation.MoviesViewModel
+import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
+import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCaseImpl
+import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCase
+import edu.dyds.movies.domain.usecase.GetPopularMoviesUseCaseImpl
+import edu.dyds.movies.presentation.detail.DetailScreenViewModel
+import edu.dyds.movies.presentation.home.HomeScreenViewModel
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -34,7 +39,14 @@ object MoviesDependencyInjector {
         }
 
     @Composable
-    fun getMoviesViewModel(): MoviesViewModel {
-        return viewModel { MoviesViewModel(tmdbHttpClient) }
+    fun getHomeScreenViewModel(): HomeScreenViewModel{
+        val getPopularMoviesUseCase:GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(tmdbHttpClient)
+        return viewModel { HomeScreenViewModel(getPopularMoviesUseCase)}
+    }
+
+    @Composable
+    fun getDetailScreenViewModel(): DetailScreenViewModel {
+        val getMovieDetailsUseCase:GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(tmdbHttpClient)
+        return viewModel { DetailScreenViewModel( getMovieDetailsUseCase)}
     }
 }
