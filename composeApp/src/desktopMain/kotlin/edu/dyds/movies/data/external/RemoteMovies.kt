@@ -4,11 +4,36 @@ import edu.dyds.movies.domain.entity.RemoteMovie
 import edu.dyds.movies.domain.entity.RemoteResult
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.DefaultRequest
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
+import io.ktor.http.URLProtocol
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 
-class RemoteMovies (
-    private val tmdbHttpClient: HttpClient,
-    ){
+private const val API_KEY = "d18da1b5da16397619c688b0263cd281"
+class RemoteMovies (){
+
+
+    private val tmdbHttpClient =
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
+            }
+            install(DefaultRequest) {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = "api.themoviedb.org"
+                    parameters.append("api_key", API_KEY)
+                }
+            }
+            install(HttpTimeout) {
+                requestTimeoutMillis = 5000
+            }
+        }
 
     suspend fun getRemoteMovieById(id: Int): RemoteMovie{
 

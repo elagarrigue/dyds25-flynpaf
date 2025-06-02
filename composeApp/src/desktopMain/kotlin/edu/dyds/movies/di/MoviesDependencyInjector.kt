@@ -17,10 +17,10 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
-private const val API_KEY = "d18da1b5da16397619c688b0263cd281"
+//private const val API_KEY = "d18da1b5da16397619c688b0263cd281"
 
 object MoviesDependencyInjector {
-
+/*
     private val tmdbHttpClient =
         HttpClient {
             install(ContentNegotiation) {
@@ -39,7 +39,7 @@ object MoviesDependencyInjector {
                 requestTimeoutMillis = 5000
             }
         }
-
+*/
     private var repository: MoviesRepository? = null
 
     @Composable
@@ -55,7 +55,7 @@ object MoviesDependencyInjector {
     }
 
     private fun getRepository(): MoviesRepository{
-        repository= repository ?: MoviesRepositoryImpl(tmdbHttpClient)
+        repository= repository ?: MoviesRepositoryImpl()
         return repository!!
     }
 }
