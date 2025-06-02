@@ -10,13 +10,16 @@ class RemoteMovies (
     private val tmdbHttpClient: HttpClient,
     ){
 
-    suspend fun getRemoteMovieById(id: Int): RemoteMovie{
-
-        return getTMDBMovieDetails(id)
+    suspend fun getRemoteMovieById(id: Int): RemoteMovie? = try {
+        getTMDBMovieDetails(id)
+    } catch (e: Exception) {
+        null
     }
 
-    suspend fun getRemotePopularMovies(): RemoteResult{
-        return getTMDBPopularMovies()
+    suspend fun getRemotePopularMovies(): List<RemoteMovie> = try {
+        getTMDBPopularMovies().results
+    } catch (e: Exception) {
+        emptyList()
     }
 
     private suspend fun getTMDBMovieDetails(id: Int): RemoteMovie =

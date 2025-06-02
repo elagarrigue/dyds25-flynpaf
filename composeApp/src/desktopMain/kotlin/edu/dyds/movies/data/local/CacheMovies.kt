@@ -3,24 +3,12 @@ package edu.dyds.movies.data.local
 import edu.dyds.movies.domain.entity.RemoteMovie
 
 
-class CacheMovies {
-    private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
+class CacheMovies: ArrayList<RemoteMovie>() {
+    fun searchMovie(id: Int): RemoteMovie? = this.find { it.id == id }
 
-
-    fun getCacheMovies(): MutableList<RemoteMovie>{
-        return cacheMovies
+    fun initializeMovieCache(popularMovies: List<RemoteMovie>): List<RemoteMovie> {
+        this.clear()
+        this.addAll(popularMovies)
+        return popularMovies
     }
-    fun saveMovie(newMovie: RemoteMovie){
-        cacheMovies.add(newMovie)
-    }
-
-    fun searchMovie(id: Int): RemoteMovie?{
-        val foundMovie = cacheMovies.find { it.id == id }
-        return foundMovie
-    }
-
-    fun isEmpty(): Boolean{
-        return cacheMovies.isEmpty()
-    }
-
 }

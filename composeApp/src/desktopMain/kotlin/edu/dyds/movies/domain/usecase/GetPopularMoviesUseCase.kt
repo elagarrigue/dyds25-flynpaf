@@ -13,26 +13,10 @@ interface GetPopularMoviesUseCase{
 class GetPopularMoviesUseCaseImpl(
     private val repository: MoviesRepository
 ): GetPopularMoviesUseCase {
-    private val cacheMovies: MutableList<RemoteMovie> = mutableListOf()
 
     override suspend fun getPopularMovies() =
-        if (cacheMovies.isNotEmpty()) {
-            cacheMovies
-        } else initializeMovieCache()
+        repository.getPopularMovies()
 
-
-    private suspend fun initializeMovieCache(): List<RemoteMovie> =
-        try {
-            initializeMovieCacheUnsafe()
-        } catch (e: Exception) {
-            emptyList()
-        }
-
-    private suspend fun initializeMovieCacheUnsafe(): List<RemoteMovie> =
-        repository.getPopularMovies().apply {
-            cacheMovies.clear()
-            cacheMovies.addAll(this)
-        }
     }
 
 
