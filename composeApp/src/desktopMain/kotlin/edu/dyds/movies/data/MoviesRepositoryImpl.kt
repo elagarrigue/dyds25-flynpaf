@@ -14,7 +14,7 @@ class MoviesRepositoryImpl(
 
     override suspend fun getMovieDetailByid(id: Int) : RemoteMovie? = cacheMovies.searchMovie(id) ?: getMovieDetailExternalAndCache(id)
 
-    suspend fun getMovieDetailExternalAndCache(id: Int): RemoteMovie?{
+    private suspend fun getMovieDetailExternalAndCache(id: Int): RemoteMovie?{
         val foundMovie = remoteMovies.getRemoteMovieById(id)
         foundMovie?.apply { cacheMovies.add(this) }
         return foundMovie
