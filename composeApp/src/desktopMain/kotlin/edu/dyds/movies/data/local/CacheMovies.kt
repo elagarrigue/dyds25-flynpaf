@@ -10,9 +10,6 @@ interface CacheMovies {
     fun getMovieList(): List<Movie>
 }
 
-
-
-
 class CacheMoviesImpl: CacheMovies {
     var cache:MutableList<Movie> = mutableListOf()
 

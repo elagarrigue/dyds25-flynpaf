@@ -7,5 +7,4 @@ interface MoviesRepository {
     suspend fun getMovieDetailByid(id: Int) : Movie?
 
     suspend fun getPopularMovies() : List<Movie>
-
 }

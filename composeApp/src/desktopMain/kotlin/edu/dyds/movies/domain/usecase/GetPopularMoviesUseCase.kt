@@ -13,16 +13,12 @@ interface GetPopularMoviesUseCase{
 class GetPopularMoviesUseCaseImpl(
     private val repository: MoviesRepository
 ): GetPopularMoviesUseCase {
-
     override suspend fun getPopularMovies() =
         repository.getPopularMovies()
-
     }
 
-
 fun List<Movie>.sortAndMap(): List<QualifiedMovie> {
-    return this
-        .sortedByDescending { it.voteAverage }
+    return this.sortedByDescending { it.voteAverage }
         .map {
             QualifiedMovie(
                 movie = it,

@@ -1,6 +1,5 @@
 package edu.dyds.movies.domain.entity
 
-
 data class Movie(
     val id: Int,
     val title: String,
