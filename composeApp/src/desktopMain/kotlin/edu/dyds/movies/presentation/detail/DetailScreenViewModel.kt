@@ -24,7 +24,7 @@ class DetailScreenViewModel(
             movieDetailStateMutableStateFlow.emit(
                 MovieDetailUiState(
                     isLoading = false,
-                    movie = movieDetailsGetter.getMovieDetails(id)?.toDomainMovie()
+                    movie = movieDetailsGetter.getMovieDetails(id)
                 )
             )
         }
