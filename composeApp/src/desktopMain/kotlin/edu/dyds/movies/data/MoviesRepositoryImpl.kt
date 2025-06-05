@@ -17,21 +17,14 @@ class MoviesRepositoryImpl(
         null
     }
 
-    override suspend fun getPopularMovies(): List<Movie> {
-        var popularMovies = emptyList<Movie>()
-        if (localMoviesSource.isEmpty()) {
-            try {
-                popularMovies = remoteMoviesSourceImpl.getRemotePopularMoviesRemote()
-            } catch (e: Exception){
-
-            }
-            if (popularMovies.isNotEmpty()) {
-                localMoviesSource.initializeMovieCache(popularMovies)
-            }
-        }else{
-            popularMovies = localMoviesSource.getMovieList()
-        }
-        return popularMovies
-    }
+    override suspend fun getPopularMovies(): List<Movie> =
+            if (localMoviesSource.isEmpty()) {
+                try {
+                    remoteMoviesSourceImpl.getRemotePopularMoviesRemote().apply{
+                        localMoviesSource.initializeMovieCache(this) }
+                } catch (e: Exception) {
+                    emptyList()
+                }
+            } else localMoviesSource.getMovieList()
 
 }

@@ -18,11 +18,9 @@ class RemoteMoviesSourceImpl(
     override suspend fun getRemoteMovieByIdRemote(id: Int): Movie? = toDomainMovie(getTMDBMovieDetails(id))
 
 
-    override suspend fun getRemotePopularMoviesRemote(): List<Movie> = try {
+    override suspend fun getRemotePopularMoviesRemote(): List<Movie> =
         remoteResultToListRemoteMovies(getTMDBPopularMovies())
-    } catch (e: Exception) {
-        emptyList()
-    }
+
 
     private fun remoteResultToListRemoteMovies(remoteResult: RemoteResult ): List<Movie>
     {
