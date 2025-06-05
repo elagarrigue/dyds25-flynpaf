@@ -16,6 +16,7 @@ class GetPopularMoviesUseCaseImpl(
     override suspend fun getPopularMovies():List<QualifiedMovie> {
         return repository.getPopularMovies().sortAndMap()
     }
+
     private fun List<Movie>.sortAndMap(): List<QualifiedMovie> {
         return this.sortedByDescending { it.voteAverage }
             .map {
