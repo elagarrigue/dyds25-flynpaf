@@ -12,7 +12,7 @@ class MoviesRepositoryImpl(
 ) : MoviesRepository {
 
     override suspend fun getMovieDetailById(id: Int): Movie? = try {
-        remoteMoviesSourceImpl.getRemoteMovieByIdRemote(id)
+        remoteMoviesSourceImpl.getMovieByIdRemote(id)
     } catch (e: Exception) {
         null
     }
@@ -20,7 +20,7 @@ class MoviesRepositoryImpl(
     override suspend fun getPopularMovies(): List<Movie> =
             if (localMoviesSource.isEmpty()) {
                 try {
-                    remoteMoviesSourceImpl.getRemotePopularMoviesRemote().apply{
+                    remoteMoviesSourceImpl.getPopularMoviesRemote().apply{
                         localMoviesSource.initializeMovieCache(this) }
                 } catch (e: Exception) {
                     emptyList()
