@@ -11,6 +11,6 @@ interface GetMovieDetailsUseCase{
 class GetMovieDetailsUseCaseImpl(
     private val repository: MoviesRepository
 ): GetMovieDetailsUseCase{
-    override suspend fun getMovieDetails(id: Int) = repository.getMovieDetailByid(id)
+    override suspend fun getMovieDetails(id: Int) = repository.getMovieDetailById(id)
 
 }
