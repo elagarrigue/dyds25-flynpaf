@@ -11,12 +11,10 @@ class MoviesRepositoryImpl(
     private val remoteMoviesSourceImpl: RemoteMoviesSource
 ) : MoviesRepository {
 
-    override suspend fun getMovieDetailById(id: Int) : Movie? = localMoviesSource.searchMovie(id) ?: getMovieDetailExternal(id)
-
-    private suspend fun getMovieDetailExternal(id: Int): Movie?{
-        val foundMovie = remoteMoviesSourceImpl.getRemoteMovieByIdRemote(id)
-        foundMovie?.apply { localMoviesSource.cacheMovie(this) }
-        return foundMovie
+    override suspend fun getMovieDetailById(id: Int) : Movie? = try {
+        remoteMoviesSourceImpl.getRemoteMovieByIdRemote(id)
+    } catch (e: Exception) {
+        null
     }
 
     override suspend fun getPopularMovies() : List<Movie> {

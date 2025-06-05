@@ -15,11 +15,8 @@ class RemoteMoviesSourceImpl(
     private val tmdbHttpClient: HttpClient,
     ):RemoteMoviesSource {
 
-    override suspend fun getRemoteMovieByIdRemote(id: Int): Movie? = try {
-        toDomainMovie(getTMDBMovieDetails(id))
-    } catch (e: Exception) {
-        null
-    }
+    override suspend fun getRemoteMovieByIdRemote(id: Int): Movie? = toDomainMovie(getTMDBMovieDetails(id))
+
 
     override suspend fun getRemotePopularMoviesRemote(): List<Movie> = try {
         remoteResultToListRemoteMovies(getTMDBPopularMovies())
