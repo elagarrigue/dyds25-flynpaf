@@ -2,7 +2,7 @@ package edu.dyds.movies.data.local
 
 import edu.dyds.movies.domain.entity.Movie
 
-interface CacheMovies {
+interface LocalMoviesSource {
     fun initializeMovieCache(popularMovies: List<Movie>): List<Movie>
     fun searchMovie(id: Int): Movie?
     fun cacheMovie(movie: Movie)
@@ -10,7 +10,7 @@ interface CacheMovies {
     fun getMovieList(): List<Movie>
 }
 
-class CacheMoviesImpl: CacheMovies {
+class LocalMoviesSourceSourceImpl: LocalMoviesSource {
     var cache:MutableList<Movie> = mutableListOf()
 
     override fun searchMovie(id: Int): Movie? = cache.find { it.id == id }
