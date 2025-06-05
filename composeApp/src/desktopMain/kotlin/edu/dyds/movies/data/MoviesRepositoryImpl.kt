@@ -22,7 +22,9 @@ class MoviesRepositoryImpl(
         if (localMoviesSource.isEmpty()) {
             try {
                 popularMovies = remoteMoviesSourceImpl.getRemotePopularMoviesRemote()
-            } catch (e: Exception){}
+            } catch (e: Exception){
+
+            }
             if (popularMovies.isNotEmpty()) {
                 localMoviesSource.initializeMovieCache(popularMovies)
             }
