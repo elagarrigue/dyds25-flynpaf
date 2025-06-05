@@ -26,20 +26,21 @@ data class RemoteMovie(
     @SerialName("original_language") val originalLanguage: String,
     val popularity: Double,
     @SerialName("vote_average") val voteAverage: Double,
-    )
 
-    fun toDomainMovie(remoteMovie: RemoteMovie): Movie {
+    ) {
+    fun toDomainMovie(): Movie {
         return Movie(
-            id = remoteMovie.id,
-            title = remoteMovie.title,
-            overview = remoteMovie.overview,
-            releaseDate = remoteMovie.releaseDate,
-            poster = "https://image.tmdb.org/t/p/w185${remoteMovie.posterPath}",
-            backdrop = remoteMovie.backdropPath.let { "https://image.tmdb.org/t/p/w780$it" },
-            originalTitle = remoteMovie.originalTitle,
-            originalLanguage = remoteMovie.originalLanguage,
-            popularity = remoteMovie.popularity,
-            voteAverage = remoteMovie.voteAverage
+            id = id,
+            title = title,
+            overview = overview,
+            releaseDate = releaseDate,
+            poster = "https://image.tmdb.org/t/p/w185$posterPath",
+            backdrop = backdropPath.let { "https://image.tmdb.org/t/p/w780$it" },
+            originalTitle = originalTitle,
+            originalLanguage = originalLanguage,
+            popularity = popularity,
+            voteAverage = voteAverage
         )
     }
+}
 

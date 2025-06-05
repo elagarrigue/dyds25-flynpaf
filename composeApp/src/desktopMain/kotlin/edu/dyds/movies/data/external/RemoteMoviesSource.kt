@@ -15,19 +15,14 @@ class RemoteMoviesSourceImpl(
     private val tmdbHttpClient: HttpClient,
     ):RemoteMoviesSource {
 
-    override suspend fun getMovieByIdRemote(id: Int): Movie? = toDomainMovie(getTMDBMovieDetails(id))
+    override suspend fun getMovieByIdRemote(id: Int): Movie? = getTMDBMovieDetails(id).toDomainMovie()
 
 
     override suspend fun getPopularMoviesRemote(): List<Movie> =
-        remoteResultToListRemoteMovies(getTMDBPopularMovies())
+        remoteResultToListRemoteMovieList(getTMDBPopularMovies())
 
 
-    private fun remoteResultToListRemoteMovies(remoteResult: RemoteResult ): List<Movie>
-    {
-        val resultList:MutableList<Movie> = mutableListOf()
-        resultList.apply { remoteResult.results.forEach { this.add(toDomainMovie(it)) } }
-        return resultList
-    }
+    private fun remoteResultToListRemoteMovieList(remoteResult: RemoteResult ): List<Movie> = remoteResult.results.map { it.toDomainMovie() }
 
     private suspend fun getTMDBMovieDetails(id: Int): RemoteMovie =
         tmdbHttpClient.get("/3/movie/$id").body()
