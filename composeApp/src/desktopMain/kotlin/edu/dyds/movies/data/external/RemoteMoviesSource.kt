@@ -19,10 +19,10 @@ class RemoteMoviesSourceImpl(
 
 
     override suspend fun getPopularMoviesRemote(): List<Movie> =
-        remoteResultToListRemoteMovieList(getTMDBPopularMovies())
+        remoteResultToMovieList(getTMDBPopularMovies())
 
 
-    private fun remoteResultToListRemoteMovieList(remoteResult: RemoteResult ): List<Movie> = remoteResult.results.map { it.toDomainMovie() }
+    private fun remoteResultToMovieList(remoteResult: RemoteResult ): List<Movie> = remoteResult.results.map { it.toDomainMovie() }
 
     private suspend fun getTMDBMovieDetails(id: Int): RemoteMovie =
         tmdbHttpClient.get("/3/movie/$id").body()
