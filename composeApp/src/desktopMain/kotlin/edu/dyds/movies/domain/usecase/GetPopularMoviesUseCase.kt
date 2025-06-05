@@ -7,22 +7,23 @@ import edu.dyds.movies.domain.repository.MoviesRepository
 private const val MIN_VOTE_AVERAGE = 6.0
 
 interface GetPopularMoviesUseCase{
-    suspend fun getPopularMovies():List<Movie>
+    suspend fun getPopularMovies():List<QualifiedMovie>
 }
 
 class GetPopularMoviesUseCaseImpl(
     private val repository: MoviesRepository
 ): GetPopularMoviesUseCase {
-    override suspend fun getPopularMovies() =
-        repository.getPopularMovies()
+    override suspend fun getPopularMovies():List<QualifiedMovie> {
+        return repository.getPopularMovies().sortAndMap()
     }
-
-fun List<Movie>.sortAndMap(): List<QualifiedMovie> {
-    return this.sortedByDescending { it.voteAverage }
-        .map {
-            QualifiedMovie(
-                movie = it,
-                isGoodMovie = it.voteAverage >= MIN_VOTE_AVERAGE
-            )
-        }
+    private fun List<Movie>.sortAndMap(): List<QualifiedMovie> {
+        return this.sortedByDescending { it.voteAverage }
+            .map {
+                QualifiedMovie(
+                    movie = it,
+                    isGoodMovie = it.voteAverage >= MIN_VOTE_AVERAGE
+                )
+            }
+    }
 }
+

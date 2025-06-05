@@ -25,7 +25,7 @@ class HomeScreenViewModel (
             moviesStateMutableStateFlow.emit(
                 MoviesUiState(
                     isLoading = false,
-                    movies = popularMovieGetter.getPopularMovies().sortAndMap()
+                    movies = popularMovieGetter.getPopularMovies()
                 )
             )
         }
