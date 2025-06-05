@@ -42,26 +42,21 @@ object MoviesDependencyInjector {
             }
         }
 
-    private var repository: MoviesRepository? = null
+    private var repository: MoviesRepository = MoviesRepositoryImpl(
+        LocalMoviesSourceSourceImpl(),
+        RemoteMoviesSourceImpl(tmdbHttpClient)
+    )
 
     @Composable
     fun getHomeScreenViewModel(): HomeScreenViewModel{
-        val getPopularMoviesUseCase:GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(getRepository())
+        val getPopularMoviesUseCase:GetPopularMoviesUseCase = GetPopularMoviesUseCaseImpl(repository)
         return viewModel { HomeScreenViewModel(getPopularMoviesUseCase)}
     }
 
     @Composable
     fun getDetailScreenViewModel(): DetailScreenViewModel {
-        val getMovieDetailsUseCase:GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(getRepository())
+        val getMovieDetailsUseCase:GetMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(repository)
         return viewModel { DetailScreenViewModel( getMovieDetailsUseCase)}
     }
 
-    private fun getRepository(): MoviesRepository{
-        val repo: MoviesRepository = repository ?: MoviesRepositoryImpl(
-            LocalMoviesSourceSourceImpl(),
-            RemoteMoviesSourceImpl(tmdbHttpClient)
-        )
-        repository= repo
-        return repo
-    }
 }
