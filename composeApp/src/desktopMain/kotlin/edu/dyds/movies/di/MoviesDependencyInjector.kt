@@ -3,8 +3,8 @@ package edu.dyds.movies.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.dyds.movies.data.MoviesRepositoryImpl
-import edu.dyds.movies.data.external.RemoteMoviesImpl
-import edu.dyds.movies.data.local.CacheMoviesImpl
+import edu.dyds.movies.data.external.RemoteMoviesSourceImpl
+import edu.dyds.movies.data.local.LocalMoviesSourceSourceImpl
 import edu.dyds.movies.domain.repository.MoviesRepository
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCaseImpl
@@ -58,8 +58,8 @@ object MoviesDependencyInjector {
 
     private fun getRepository(): MoviesRepository{
         val repo: MoviesRepository = repository ?: MoviesRepositoryImpl(
-            CacheMoviesImpl(),
-            RemoteMoviesImpl(tmdbHttpClient)
+            LocalMoviesSourceSourceImpl(),
+            RemoteMoviesSourceImpl(tmdbHttpClient)
         )
         repository= repo
         return repo
