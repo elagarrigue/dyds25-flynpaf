@@ -11,20 +11,25 @@ class MoviesRepositoryImpl(
     private val remoteMoviesSourceImpl: RemoteMoviesSource
 ) : MoviesRepository {
 
-    override suspend fun getMovieDetailById(id: Int) : Movie? = try {
+    override suspend fun getMovieDetailById(id: Int): Movie? = try {
         remoteMoviesSourceImpl.getRemoteMovieByIdRemote(id)
     } catch (e: Exception) {
         null
     }
 
-    override suspend fun getPopularMovies() : List<Movie> {
-        if(localMoviesSource.isEmpty()) getPopularMoviesExternal()
-        return localMoviesSource.getMovieList()
+    override suspend fun getPopularMovies(): List<Movie> {
+        var popularMovies = emptyList<Movie>()
+        if (localMoviesSource.isEmpty()) {
+            try {
+                popularMovies = remoteMoviesSourceImpl.getRemotePopularMoviesRemote()
+            } catch (e: Exception){}
+            if (popularMovies.isNotEmpty()) {
+                localMoviesSource.initializeMovieCache(popularMovies)
+            }
+        }else{
+            popularMovies = localMoviesSource.getMovieList()
+        }
+        return popularMovies
     }
 
-
-    private suspend fun getPopularMoviesExternal() {
-        val popularMovies= remoteMoviesSourceImpl.getRemotePopularMoviesRemote().ifEmpty { null }
-        popularMovies?.apply {localMoviesSource.initializeMovieCache(this)}
-    }
 }
