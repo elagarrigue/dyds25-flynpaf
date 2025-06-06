@@ -19,12 +19,27 @@ class MoviesRepositoryImpl(
 
     override suspend fun getPopularMovies(): List<Movie> =
             if (localMoviesSource.isEmpty()) {
-                try {
-                    remoteMoviesSourceImpl.getPopularMoviesRemote().apply{
-                        localMoviesSource.initializeMovieCache(this) }
-                } catch (e: Exception) {
-                    emptyList()
-                }
+                getMovies()
             } else localMoviesSource.getMovieList()
+
+    private suspend fun getMovies(): List<Movie> =
+        try {
+            getMoviesFromRemoteAndSaveToLocal()
+        } catch (e: Exception) {
+            emptyList()
+        }
+
+    private suspend fun getMoviesFromRemoteAndSaveToLocal(): List<Movie> {
+        val movies= getMoviesFromRemoteSource()
+        saveMoviesToLocalSource(movies)
+        return movies
+
+    }
+
+    private suspend fun getMoviesFromRemoteSource(): List<Movie> = remoteMoviesSourceImpl.getPopularMoviesRemote()
+
+    private fun saveMoviesToLocalSource(movies: List<Movie>) {
+        localMoviesSource.initializeMovieCache(movies)
+    }
 
 }
