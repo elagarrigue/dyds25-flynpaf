@@ -1,6 +1,6 @@
 @file:Suppress("FunctionName")
 
-package edu.dyds.movies
+package edu.dyds.movies.presentation.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,42 +20,63 @@ import coil3.compose.AsyncImage
 import dydsproject.composeapp.generated.resources.Res
 import dydsproject.composeapp.generated.resources.app_name
 import dydsproject.composeapp.generated.resources.error
+import edu.dyds.movies.domain.entity.Movie
+import edu.dyds.movies.domain.entity.QualifiedMovie
+import edu.dyds.movies.presentation.utils.LoadingIndicator
+import edu.dyds.movies.presentation.utils.NoResults
 import org.jetbrains.compose.resources.stringResource
+import androidx.compose.foundation.Image
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: MoviesViewModel,
+    viewModel: HomeScreenViewModel,
     onGoodMovieClick: (Movie) -> Unit
 ) {
-
     LaunchedEffect(Unit) {
         viewModel.getAllMovies()
     }
 
-    val state by viewModel.moviesStateFlow.collectAsState(MoviesViewModel.MoviesUiState())
+    val state by viewModel.moviesStateFlow.collectAsState(HomeScreenViewModel.MoviesUiState())
 
     MaterialTheme {
         Surface {
             val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
             Scaffold(
-                topBar = {
-                    TopAppBar(
-                        { Text(stringResource(Res.string.app_name)) },
-                        scrollBehavior = scrollBehavior
-                    )
-                },
+                topBar = { functionTopBar(scrollBehavior) },
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
             ) { padding ->
-
-                LoadingIndicator(state.isLoading)
-
-                when {
-                    state.movies.isNotEmpty() -> MovieGrid(padding, state.movies, onGoodMovieClick)
-                    state.isLoading.not() -> NoResults { viewModel.getAllMovies() }
+                    functionHomeState(padding, state, viewModel, onGoodMovieClick)
                 }
             }
         }
+    }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun functionTopBar(scrollBehavior: TopAppBarScrollBehavior){
+    TopAppBar(
+        { Text(stringResource(Res.string.app_name)) },
+        scrollBehavior = scrollBehavior
+    )
+}
+
+
+    @Composable
+private fun functionHomeState(
+    padding: PaddingValues,
+    state: HomeScreenViewModel.MoviesUiState,
+    viewModel: HomeScreenViewModel,
+    onGoodMovieClick: (Movie) -> Unit
+){
+    LoadingIndicator(state.isLoading)
+
+    when {
+        state.movies.isNotEmpty() -> MovieGrid(padding, state.movies, onGoodMovieClick)
+        state.isLoading.not() -> NoResults { viewModel.getAllMovies() }
     }
 }
 
@@ -134,8 +155,8 @@ private fun BadMovieItem(movie: Movie) {
         onCloseRequest = { dialogState = false },
         visible = dialogState
     ) {
-        AsyncImage(
-            model = this::class.java.getResource("/images/too_bad.png")?.toString(),
+        Image(
+            painter = painterResource("images/too_bad.png"),
             contentDescription = null,
             contentScale = ContentScale.Fit,
             modifier = Modifier
