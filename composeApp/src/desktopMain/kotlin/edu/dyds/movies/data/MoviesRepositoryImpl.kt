@@ -18,8 +18,8 @@ class MoviesRepositoryImpl(
     }
 
     override suspend fun getPopularMovies(): List<Movie> =
-            if (localMoviesSource.isEmpty()) getMovies()
-            else localMoviesSource.getMovieList()
+        if (localMoviesSource.isEmpty()) getMovies()
+        else localMoviesSource.getMovieList()
 
     private suspend fun getMovies(): List<Movie> =
         try {
@@ -29,7 +29,7 @@ class MoviesRepositoryImpl(
         }
 
     private suspend fun getMoviesFromRemoteSourceAndSaveToLocalSource(): List<Movie> {
-        val movies= getMoviesFromRemoteSource()
+        val movies = getMoviesFromRemoteSource()
         saveMoviesToLocalSource(movies)
         return movies
     }

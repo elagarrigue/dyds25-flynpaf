@@ -6,12 +6,12 @@ interface LocalMoviesSource {
     fun initializeMovieCache(popularMovies: List<Movie>): List<Movie>
     fun searchMovie(id: Int): Movie?
     fun cacheMovie(movie: Movie)
-    fun isEmpty():Boolean
+    fun isEmpty(): Boolean
     fun getMovieList(): List<Movie>
 }
 
-class LocalMoviesSourceSourceImpl: LocalMoviesSource {
-    var cache:MutableList<Movie> = mutableListOf()
+class LocalMoviesSourceSourceImpl : LocalMoviesSource {
+    var cache: MutableList<Movie> = mutableListOf()
 
     override fun searchMovie(id: Int): Movie? = cache.find { it.id == id }
 
@@ -21,11 +21,11 @@ class LocalMoviesSourceSourceImpl: LocalMoviesSource {
         return popularMovies
     }
 
-    override fun cacheMovie(movie: Movie){
+    override fun cacheMovie(movie: Movie) {
         cache.add(movie)
     }
 
-    override fun isEmpty():Boolean {
+    override fun isEmpty(): Boolean {
         return cache.isEmpty()
     }
 
