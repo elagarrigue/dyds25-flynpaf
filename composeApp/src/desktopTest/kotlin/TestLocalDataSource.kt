@@ -1,2 +1,2 @@
-public class TestLocalDataSource {
+class TestLocalDataSource {
 }
