@@ -5,12 +5,11 @@ import edu.dyds.movies.domain.entity.Movie
 interface LocalMoviesSource {
     fun initializeMovieCache(popularMovies: List<Movie>): List<Movie>
     fun searchMovie(id: Int): Movie?
-    fun cacheMovie(movie: Movie)
     fun isEmpty(): Boolean
     fun getMovieList(): List<Movie>
 }
 
-class LocalMoviesSourceSourceImpl : LocalMoviesSource {
+class LocalMoviesSourceImpl : LocalMoviesSource {
     var cache: MutableList<Movie> = mutableListOf()
 
     override fun searchMovie(id: Int): Movie? = cache.find { it.id == id }
@@ -19,10 +18,6 @@ class LocalMoviesSourceSourceImpl : LocalMoviesSource {
         cache.clear()
         cache.addAll(popularMovies)
         return popularMovies
-    }
-
-    override fun cacheMovie(movie: Movie) {
-        cache.add(movie)
     }
 
     override fun isEmpty(): Boolean {
