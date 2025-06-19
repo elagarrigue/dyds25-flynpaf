@@ -33,21 +33,21 @@ class TestHomeViewModel {
         Dispatchers.resetMain()
     }
 
-    private val getPopularMoviesUseCase = object : GetPopularMoviesUseCase{
+    private val getPopularMoviesUseCase = object : GetPopularMoviesUseCase {
         override suspend fun getPopularMovies(): List<QualifiedMovie> {
             return listOf(
-                    QualifiedMovie(
-                    movie= Movie(
-                    1,
-                    "Movie 1",
-                    "the movie 1 overview",
-                    "21/10/2023",
-                    "poster url",
-                    "backdrop url",
-                    "Original Movie 1",
-                    "en",
-                    10.0,
-                    8.0
+                QualifiedMovie(
+                    movie = Movie(
+                        1,
+                        "Movie 1",
+                        "the movie 1 overview",
+                        "21/10/2023",
+                        "poster url",
+                        "backdrop url",
+                        "Original Movie 1",
+                        "en",
+                        10.0,
+                        8.0
                     ),
                     isGoodMovie = true
                 )
@@ -80,7 +80,7 @@ class TestHomeViewModel {
                 isLoading = false,
                 movies = listOf(
                     QualifiedMovie(
-                        movie= Movie(
+                        movie = Movie(
                             1,
                             "Movie 1",
                             "the movie 1 overview",
@@ -100,5 +100,5 @@ class TestHomeViewModel {
         )
     }
 
-    }
+}
 
