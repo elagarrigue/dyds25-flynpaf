@@ -1,4 +1,5 @@
 
+import edu.dyds.movies.data.MoviesRepositoryImpl
 import edu.dyds.movies.data.external.RemoteMoviesSource
 import edu.dyds.movies.data.local.LocalMoviesSource
 import edu.dyds.movies.domain.entity.Movie
@@ -36,25 +37,13 @@ class TestRepository {
                 1 -> MovieExample1
                 2 -> MovieExample2
                 3 -> MovieExample3
-                else -> throw Exception("Pelicula No Encontrada")
+                else -> null
             }
         }
 
         override suspend fun getPopularMoviesRemote(): List<Movie> {
             return listOf(MovieExample1,MovieExample2,MovieExample3)
         }
-    }
-
-    class MoviesRepositoryImpl(
-        private val localMoviesSource: LocalMoviesSource,
-        private val remoteMoviesSource: RemoteMoviesSource
-    ) : MoviesRepository {
-
-        override suspend fun getMovieDetailById(id: Int): Movie? = remoteMoviesSource.getMovieByIdRemote(id)
-
-        override suspend fun getPopularMovies(): List<Movie> =
-            if (localMoviesSource.isEmpty()) remoteMoviesSource.getPopularMoviesRemote()
-            else localMoviesSource.getMovieList()
     }
 
     private lateinit var moviesRepositoryFake: MoviesRepository
@@ -124,13 +113,10 @@ class TestRepository {
         //arrange
 
         //act
-        try {
-            val result = moviesRepositoryFake.getMovieDetailById(4)
-            assertEquals(result,null)
-        }catch(e : Exception){
+        val result = moviesRepositoryFake.getMovieDetailById(4)
 
-        }
         // assert
+        assertEquals(result,null)
     }
 
 
