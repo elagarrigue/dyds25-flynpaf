@@ -1,34 +1,14 @@
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.repository.MoviesRepository
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCaseImpl
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TestUseCasesMovieDetails {
-    val testDispatcher = UnconfinedTestDispatcher()
-    val testScope = CoroutineScope(testDispatcher)
 
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(testDispatcher)
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-    }
-
-    //Movies de Prueba
     val movieExample1 = Movie(
         1, "Example title 1",
         "Example overview 1", "Example releaseDate 1",
@@ -56,7 +36,6 @@ class TestUseCasesMovieDetails {
 
         override suspend fun getMovieDetailById(idMovie: Int): Movie? {
             return fakeMovieList.find { it.id == idMovie }
-
         }
 
         override suspend fun getPopularMovies(): List<Movie> {
