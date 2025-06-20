@@ -66,8 +66,7 @@ class TestLocalDataSource {
                     9.0,
                     7.0
                 )
-            ),
-            actual = localDataSource.cache
+            ), actual = localDataSource.cache
         )
     }
 
@@ -93,8 +92,7 @@ class TestLocalDataSource {
                     10.0,
                     8.0
                 )
-            ),
-            actual = returnedList
+            ), actual = returnedList
         )
     }
 
@@ -118,8 +116,7 @@ class TestLocalDataSource {
                 "en",
                 10.0,
                 8.0
-            ),
-            actual = returnedMovie
+            ), actual = returnedMovie
         )
     }
 
@@ -132,8 +129,7 @@ class TestLocalDataSource {
 
         //Assert
         assertEquals(
-            expected = null,
-            actual = returnedMovie
+            expected = null, actual = returnedMovie
         )
     }
 
@@ -146,8 +142,7 @@ class TestLocalDataSource {
 
         //Assert
         assertEquals(
-            expected = false,
-            actual = emptyFlag
+            expected = false, actual = emptyFlag
         )
     }
 
@@ -161,8 +156,7 @@ class TestLocalDataSource {
 
         //Assert
         assertEquals(
-            expected = true,
-            actual = emptyFlag
+            expected = true, actual = emptyFlag
         )
     }
 }

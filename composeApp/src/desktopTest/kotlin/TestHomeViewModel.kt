@@ -48,8 +48,7 @@ class TestHomeViewModel {
                         "en",
                         10.0,
                         8.0
-                    ),
-                    isGoodMovie = true
+                    ), isGoodMovie = true
                 )
             )
         }
@@ -72,13 +71,11 @@ class TestHomeViewModel {
 
         // Assert
         assertEquals(
-            expected = HomeScreenViewModel.MoviesUiState(isLoading = true, movies = emptyList()),
-            actual = events[0]
+            expected = HomeScreenViewModel.MoviesUiState(isLoading = true, movies = emptyList()), actual = events[0]
         )
         assertEquals(
             expected = HomeScreenViewModel.MoviesUiState(
-                isLoading = false,
-                movies = listOf(
+                isLoading = false, movies = listOf(
                     QualifiedMovie(
                         movie = Movie(
                             1,
@@ -91,12 +88,10 @@ class TestHomeViewModel {
                             "en",
                             10.0,
                             8.0
-                        ),
-                        isGoodMovie = true
+                        ), isGoodMovie = true
                     )
                 )
-            ),
-            actual = events[1]
+            ), actual = events[1]
         )
     }
 }

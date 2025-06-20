@@ -65,13 +65,11 @@ class TestDetailViewModel {
 
         // Assert
         assertEquals(
-            expected = DetailScreenViewModel.MovieDetailUiState(isLoading = true, movie = null),
-            actual = events[0]
+            expected = DetailScreenViewModel.MovieDetailUiState(isLoading = true, movie = null), actual = events[0]
         )
         assertEquals(
             expected = DetailScreenViewModel.MovieDetailUiState(
-                isLoading = false,
-                movie = Movie(
+                isLoading = false, movie = Movie(
                     1,
                     "Movie 1",
                     "the movie 1 overview",
@@ -83,8 +81,7 @@ class TestDetailViewModel {
                     10.0,
                     8.0
                 )
-            ),
-            actual = events[1]
+            ), actual = events[1]
         )
     }
 }
