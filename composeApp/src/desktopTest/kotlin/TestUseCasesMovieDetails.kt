@@ -13,20 +13,18 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-
-
 @OptIn(ExperimentalCoroutinesApi::class)
 class TestUseCasesMovieDetails {
     val testDispatcher = UnconfinedTestDispatcher()
     val testScope = CoroutineScope(testDispatcher)
 
     @BeforeTest
-    fun setUp(){
+    fun setUp() {
         Dispatchers.setMain(testDispatcher)
     }
 
     @AfterTest
-    fun tearDown(){
+    fun tearDown() {
         Dispatchers.resetMain()
     }
 
@@ -77,6 +75,4 @@ class TestUseCasesMovieDetails {
         //Asset
         assertEquals(movieExample3, result)
     }
-
-
 }
