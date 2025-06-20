@@ -44,7 +44,7 @@ class TestUseCasesMovieDetails {
     }
 
     @Test
-    fun ` Test de getMovieDetails retornar ID correcto`() = runTest {
+    fun `test getMovieDetails returns the correct movie`() = runTest {
         //Arrange
         val getMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(getFakeMovieRepository)
 

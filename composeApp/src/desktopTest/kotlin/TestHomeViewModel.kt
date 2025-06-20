@@ -99,6 +99,5 @@ class TestHomeViewModel {
             actual = events[1]
         )
     }
-
 }
 

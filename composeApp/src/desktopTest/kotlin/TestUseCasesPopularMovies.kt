@@ -36,8 +36,8 @@ class TestUseCasesPopularMovies {
     private val getFakeMovieRepository = object : MoviesRepository {
         private val fakeMovieList = listOf(movieExample1, movieExample2, movieExample3)
 
-        override suspend fun getMovieDetailById(idMovie: Int): Movie? {
-            return fakeMovieList.find { it.id == idMovie }
+        override suspend fun getMovieDetailById(id: Int): Movie? {
+            return fakeMovieList.find { it.id == id }
         }
 
         override suspend fun getPopularMovies(): List<Movie> {
@@ -46,7 +46,7 @@ class TestUseCasesPopularMovies {
     }
 
     @Test
-    fun `Test de getPopularMovies() retornar la lista de calificaciones Ordenada`() = runTest {
+    fun `test getPopularMovies returns movie list ordered by vote average`() = runTest {
         //Arrange
         val getPopularMovieUseCase = GetPopularMoviesUseCaseImpl(getFakeMovieRepository)
 
@@ -61,7 +61,7 @@ class TestUseCasesPopularMovies {
     }
 
     @Test
-    fun `Test de getPopularMovies() verificar calificaciones`() = runTest {
+    fun `test getPopularMovies qualifies movies correctly`() = runTest {
         //Arrange
         val getPopularMovieUseCase = GetPopularMoviesUseCaseImpl(getFakeMovieRepository)
 
