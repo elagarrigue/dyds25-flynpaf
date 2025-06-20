@@ -1,6 +1,7 @@
 package edu.dyds.movies.data.local
 
 import edu.dyds.movies.domain.entity.Movie
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.BeforeTest
@@ -28,7 +29,7 @@ class TestLocalDataSource {
     }
 
     @Test
-    fun `test initializeMovieCache caches the list correctly`() {
+    fun `test initializeMovieCache caches the list correctly`() = runTest {
         //Arrange
         localDataSource = LocalMoviesSourceImpl()
 
@@ -71,7 +72,7 @@ class TestLocalDataSource {
     }
 
     @Test
-    fun `test getMovieList returns the correct list`() {
+    fun `test getMovieList returns the correct list`() = runTest {
         //Arrange
 
         //Act
@@ -98,7 +99,7 @@ class TestLocalDataSource {
     }
 
     @Test
-    fun `test searchMovie with existing id returns correct movie`() {
+    fun `test searchMovie with existing id returns correct movie`() = runTest {
         //Arrange
 
         //Act
@@ -123,7 +124,7 @@ class TestLocalDataSource {
     }
 
     @Test
-    fun `test searchMovie with missing id returns null`() {
+    fun `test searchMovie with missing id returns null`() = runTest {
         //Arrange
 
         //Act
@@ -137,7 +138,7 @@ class TestLocalDataSource {
     }
 
     @Test
-    fun `test isEmpty returns false when the list is not empty`() {
+    fun `test isEmpty returns false when the list is not empty`() = runTest {
         //Arrange
 
         //Act
@@ -151,7 +152,7 @@ class TestLocalDataSource {
     }
 
     @Test
-    fun `test isEmpty returns true when the list is empty`() {
+    fun `test isEmpty returns true when the list is empty`() = runTest {
         //Arrange
         localDataSource.cache = mutableListOf()
 
