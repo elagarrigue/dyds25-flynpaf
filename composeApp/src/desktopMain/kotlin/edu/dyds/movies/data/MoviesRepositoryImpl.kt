@@ -37,7 +37,7 @@ class MoviesRepositoryImpl(
     private suspend fun getMoviesFromRemoteSource(): List<Movie> = remoteMoviesSource.getPopularMoviesRemote()
 
     private fun saveMoviesToLocalSource(movies: List<Movie>) {
-        localMoviesSource.initializeMovieCache(movies)
+        localMoviesSource.addMovies(movies)
     }
 
 }

@@ -14,12 +14,9 @@ class TestRepository {
     class LocalMoviesSourceFake : LocalMoviesSource {
         var cache: MutableList<Movie> = mutableListOf()
 
-        override fun searchMovie(id: Int): Movie? = cache.find { it.id == id }
-
-        override fun initializeMovieCache(popularMovies: List<Movie>): List<Movie> {
+        override fun addMovies(popularMovies: List<Movie>) {
             cache.clear()
             cache.addAll(popularMovies)
-            return popularMovies
         }
 
         override fun isEmpty(): Boolean {
@@ -128,7 +125,7 @@ class TestRepository {
     fun setUp() {
         val listOfPopularMovies = listOf(movieExample1, movieExample2, movieExample3)
         localMoviesSourceFake = LocalMoviesSourceFake()
-        localMoviesSourceFake.initializeMovieCache(listOfPopularMovies)
+        localMoviesSourceFake.addMovies(listOfPopularMovies)
         remoteMoviesSourceFake = RemoteMoviesSourceFake()
         moviesRepository = MoviesRepositoryImpl(
             localMoviesSourceFake, remoteMoviesSourceFake
@@ -150,7 +147,7 @@ class TestRepository {
     @Test
     fun `test getPopularMovies returns from remote source when local source is empty`() = runTest {
         //Arrange
-        localMoviesSourceFake.initializeMovieCache(emptyList())
+        localMoviesSourceFake.addMovies(emptyList())
         val expected = listOf(movieExample1, movieExample2, movieExample3)
 
         //Act
