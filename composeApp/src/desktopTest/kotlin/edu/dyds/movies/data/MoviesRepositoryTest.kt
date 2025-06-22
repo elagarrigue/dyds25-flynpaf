@@ -10,7 +10,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 
-class TestRepository {
+class MoviesRepositoryTest {
     class LocalMoviesSourceFake : LocalMoviesSource {
         var cache: MutableList<Movie> = mutableListOf()
 

@@ -6,7 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.BeforeTest
 
-class TestLocalDataSource {
+class LocalMoviesSourceTest {
     lateinit var localDataSource: LocalMoviesSourceImpl
 
     @BeforeTest

@@ -18,7 +18,7 @@ import kotlin.test.assertEquals
 
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class TestHomeViewModel {
+class HomeScreenViewModelTest {
 
     val testDispatcher = UnconfinedTestDispatcher()
     val testScope = CoroutineScope(testDispatcher)
