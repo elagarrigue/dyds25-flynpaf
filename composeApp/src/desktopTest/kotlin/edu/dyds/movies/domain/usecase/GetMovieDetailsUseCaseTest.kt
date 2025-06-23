@@ -6,11 +6,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class TestUseCasesPopularMovies {
+class GetMovieDetailsUseCaseTest {
 
     val movieExample1 = Movie(
         1,
@@ -34,7 +32,7 @@ class TestUseCasesPopularMovies {
         "Example originalTitle 2",
         "Example originalLanguage 2",
         2.0,
-        6.0
+        2.0
     )
     val movieExample3 = Movie(
         3,
@@ -46,14 +44,14 @@ class TestUseCasesPopularMovies {
         "Example originalTitle 3",
         "Example originalLanguage 3",
         3.0,
-        8.0
+        3.0
     )
 
     private val getFakeMovieRepository = object : MoviesRepository {
         private val fakeMovieList = listOf(movieExample1, movieExample2, movieExample3)
 
-        override suspend fun getMovieDetailById(id: Int): Movie? {
-            return fakeMovieList.find { it.id == id }
+        override suspend fun getMovieDetailById(idMovie: Int): Movie? {
+            return fakeMovieList.find { it.id == idMovie }
         }
 
         override suspend fun getPopularMovies(): List<Movie> {
@@ -62,31 +60,14 @@ class TestUseCasesPopularMovies {
     }
 
     @Test
-    fun `test getPopularMovies returns movie list ordered by vote average`() = runTest {
+    fun `test getMovieDetails returns the correct movie`() = runTest {
         //Arrange
-        val getPopularMovieUseCase = GetPopularMoviesUseCaseImpl(getFakeMovieRepository)
+        val getMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(getFakeMovieRepository)
 
         //Act
-        val result = getPopularMovieUseCase.getPopularMovies()
+        val result = getMovieDetailsUseCase.getMovieDetails(3)
 
         //Asset
-        assertEquals(3, result.size)
-        assertEquals(3, result[0].movie.id)
-        assertEquals(2, result[1].movie.id)
-        assertEquals(1, result[2].movie.id)
-    }
-
-    @Test
-    fun `test getPopularMovies qualifies movies correctly`() = runTest {
-        //Arrange
-        val getPopularMovieUseCase = GetPopularMoviesUseCaseImpl(getFakeMovieRepository)
-
-        //Act
-        val result = getPopularMovieUseCase.getPopularMovies()
-
-        //Asset
-        assertTrue(result[0].isGoodMovie)
-        assertTrue(result[1].isGoodMovie)
-        assertFalse(result[2].isGoodMovie)
+        assertEquals(movieExample3, result)
     }
 }

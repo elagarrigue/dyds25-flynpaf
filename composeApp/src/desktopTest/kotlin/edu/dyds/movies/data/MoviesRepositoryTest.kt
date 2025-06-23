@@ -10,13 +10,11 @@ import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 
-class TestRepository {
+class MoviesRepositoryTest {
     class LocalMoviesSourceFake : LocalMoviesSource {
         var cache: MutableList<Movie> = mutableListOf()
 
-        override fun searchMovie(id: Int): Movie? = cache.find { it.id == id }
-
-        override fun initializeMovieCache(popularMovies: List<Movie>): List<Movie> {
+        override fun addMovies(popularMovies: List<Movie>) {
             cache.clear()
             cache.addAll(popularMovies)
             return popularMovies
@@ -148,9 +146,9 @@ class TestRepository {
     }
 
     @Test
-    fun `Test de getPopularMovies() Remoto`() = runTest {
-        //arrange
-        localMoviesSourceFake.initializeMovieCache(emptyList())
+    fun `test getPopularMovies returns from remote source when local source is empty`() = runTest {
+        //Arrange
+        localMoviesSourceFake.addMovies(emptyList())
         val expected = listOf(movieExample1, movieExample2, movieExample3)
         //act
         val result = moviesRepository.getPopularMovies()
@@ -191,6 +189,4 @@ class TestRepository {
         // assert
         assertEquals(expected, result)
     }
-
-
 }
