@@ -148,39 +148,49 @@ class TestRepository {
     }
 
     @Test
-    fun `test getPopularMovies returns from remote source when local source is empty`() = runTest {
-        //Arrange
+    fun `Test de getPopularMovies() Remoto`() = runTest {
+        //arrange
         localMoviesSourceFake.initializeMovieCache(emptyList())
         val expected = listOf(movieExample1, movieExample2, movieExample3)
-
-        //Act
+        //act
         val result = moviesRepository.getPopularMovies()
-
-        //Assert
+        // assert
         assertEquals(expected, result)
     }
 
     @Test
-    fun `test getMovieById returns the correct movie using existing id`() = runTest {
-        //Arrange
+    fun `Test de getPopularMovies() local despues de llamado remoto`() = runTest {
+        //arrange
+        localMoviesSourceFake.initializeMovieCache(emptyList())
+
+        //act
+        val expected = moviesRepository.getPopularMovies();
+        val result = localMoviesSourceFake.getMovieList();
+        //assert
+
+        assertEquals(expected,result)
+    }
+
+
+    @Test
+    fun `Test de getMovieById() Remoto`() = runTest {
+        //arrange
         val expected = movieExample1
-
-        //Act
+        //act
         val result = moviesRepository.getMovieDetailById(1)
-
-        //Assert
+        // assert
         assertEquals(expected, result)
     }
 
     @Test
-    fun `test getMovieById returns null using missing id`() = runTest {
-        //Arrange
+    fun `Test de getMovieById() Remoto id erroneo`() = runTest {
+        //arrange
         val expected = null
-
-        //Act
+        //act
         val result = moviesRepository.getMovieDetailById(4)
-
-        //Assert
+        // assert
         assertEquals(expected, result)
     }
+
+
 }

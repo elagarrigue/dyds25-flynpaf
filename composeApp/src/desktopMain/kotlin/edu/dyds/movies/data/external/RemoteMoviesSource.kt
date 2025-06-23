@@ -6,7 +6,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 
 interface RemoteMoviesSource{
-    suspend fun getMovieByIdRemote(id: Int): Movie
+    suspend fun getMovieByIdRemote(id: Int): Movie?
     suspend fun getPopularMoviesRemote(): List<Movie>
 
 }
