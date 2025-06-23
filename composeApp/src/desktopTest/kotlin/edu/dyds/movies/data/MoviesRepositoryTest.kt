@@ -17,7 +17,6 @@ class MoviesRepositoryTest {
         override fun addMovies(popularMovies: List<Movie>) {
             cache.clear()
             cache.addAll(popularMovies)
-            return popularMovies
         }
 
         override fun isEmpty(): Boolean {
@@ -126,7 +125,7 @@ class MoviesRepositoryTest {
     fun setUp() {
         val listOfPopularMovies = listOf(movieExample1, movieExample2, movieExample3)
         localMoviesSourceFake = LocalMoviesSourceFake()
-        localMoviesSourceFake.initializeMovieCache(listOfPopularMovies)
+        localMoviesSourceFake.addMovies(listOfPopularMovies)
         remoteMoviesSourceFake = RemoteMoviesSourceFake()
         moviesRepository = MoviesRepositoryImpl(
             localMoviesSourceFake, remoteMoviesSourceFake
@@ -159,7 +158,7 @@ class MoviesRepositoryTest {
     @Test
     fun `Test de getPopularMovies() local despues de llamado remoto`() = runTest {
         //arrange
-        localMoviesSourceFake.initializeMovieCache(emptyList())
+        localMoviesSourceFake.addMovies(emptyList())
 
         //act
         val expected = moviesRepository.getPopularMovies()
