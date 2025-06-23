@@ -164,8 +164,8 @@ class TestRepository {
         localMoviesSourceFake.initializeMovieCache(emptyList())
 
         //act
-        val expected = moviesRepository.getPopularMovies();
-        val result = localMoviesSourceFake.getMovieList();
+        val expected = moviesRepository.getPopularMovies()
+        val result = localMoviesSourceFake.getMovieList()
         //assert
 
         assertEquals(expected,result)
