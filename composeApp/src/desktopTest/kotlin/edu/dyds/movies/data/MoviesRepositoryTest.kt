@@ -156,7 +156,7 @@ class MoviesRepositoryTest {
     }
 
     @Test
-    fun `Test de getPopularMovies() local despues de llamado remoto`() = runTest {
+    fun `test getPopularMovies saves movies to local source after retrieving from remote source`() = runTest {
         //arrange
         localMoviesSourceFake.addMovies(emptyList())
 
@@ -165,12 +165,12 @@ class MoviesRepositoryTest {
         val result = localMoviesSourceFake.getMovieList()
         //assert
 
-        assertEquals(expected,result)
+        assertEquals(expected, result)
     }
 
 
     @Test
-    fun `Test de getMovieById() Remoto`() = runTest {
+    fun `test getMovieById with valid id returns the correct movie`() = runTest {
         //arrange
         val expected = movieExample1
         //act
@@ -180,7 +180,7 @@ class MoviesRepositoryTest {
     }
 
     @Test
-    fun `Test de getMovieById() Remoto id erroneo`() = runTest {
+    fun `test getMovieById returns null when RemoteMoviesSource throws exception because of invalid id`() = runTest {
         //arrange
         val expected = null
         //act
