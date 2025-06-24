@@ -1,7 +1,7 @@
 package edu.dyds.movies.domain.usecase
 
 import edu.dyds.movies.domain.entity.Movie
-import edu.dyds.movies.domain.repository.MoviesRepository
+import edu.dyds.movies.domain.fakes.FakeMovieRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -49,17 +49,8 @@ class GetPopularMoviesUseCaseTest {
         8.0
     )
 
-    private val getFakeMovieRepository = object : MoviesRepository {
-        private val fakeMovieList = listOf(movieExample1, movieExample2, movieExample3)
-
-        override suspend fun getMovieDetailById(id: Int): Movie? {
-            return fakeMovieList.find { it.id == id }
-        }
-
-        override suspend fun getPopularMovies(): List<Movie> {
-            return fakeMovieList
-        }
-    }
+    private val fakeMovieList = listOf(movieExample1, movieExample2, movieExample3)
+    private val getFakeMovieRepository = FakeMovieRepository(fakeMovieList)
 
     @Test
     fun `test getPopularMovies returns movie list ordered by vote average`() = runTest {
