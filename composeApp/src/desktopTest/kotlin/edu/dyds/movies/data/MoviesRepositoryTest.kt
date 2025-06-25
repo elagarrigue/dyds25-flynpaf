@@ -9,6 +9,42 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
+private fun getMovieExample1() = Movie(
+    1,
+    "Example title 1",
+    "Example overview 1",
+    "Example releaseDate 1",
+    "Example poster 1",
+    "Example backdrop 1",
+    "Example originalTitle 1",
+    "Example originalLanguage 1",
+    1.0,
+    1.0
+)
+private fun getMovieExample2() = Movie(
+    2,
+    "Example title 2",
+    "Example overview 2",
+    "Example releaseDate 2",
+    "Example poster 2",
+    "Example backdrop 2",
+    "Example originalTitle 2",
+    "Example originalLanguage 2",
+    2.0,
+    2.0
+)
+private fun getMovieExample3() = Movie(
+    3,
+    "Example title 3",
+    "Example overview 3",
+    "Example releaseDate 3",
+    "Example poster 3",
+    "Example backdrop 3",
+    "Example originalTitle 3",
+    "Example originalLanguage 3",
+    3.0,
+    3.0
+)
 
 class MoviesRepositoryTest {
     class LocalMoviesSourceFake : LocalMoviesSource {
@@ -30,42 +66,6 @@ class MoviesRepositoryTest {
 
     class RemoteMoviesSourceFake() : RemoteMoviesSource {
         private var resourceAvailable= true
-        val movieExample1 = Movie(
-            1,
-            "Example title 1",
-            "Example overview 1",
-            "Example releaseDate 1",
-            "Example poster 1",
-            "Example backdrop 1",
-            "Example originalTitle 1",
-            "Example originalLanguage 1",
-            1.0,
-            1.0
-        )
-        val movieExample2 = Movie(
-            2,
-            "Example title 2",
-            "Example overview 2",
-            "Example releaseDate 2",
-            "Example poster 2",
-            "Example backdrop 2",
-            "Example originalTitle 2",
-            "Example originalLanguage 2",
-            2.0,
-            2.0
-        )
-        val movieExample3 = Movie(
-            3,
-            "Example title 3",
-            "Example overview 3",
-            "Example releaseDate 3",
-            "Example poster 3",
-            "Example backdrop 3",
-            "Example originalTitle 3",
-            "Example originalLanguage 3",
-            3.0,
-            3.0
-        )
 
         fun enableResource() { resourceAvailable = true }
 
@@ -73,16 +73,16 @@ class MoviesRepositoryTest {
 
         override suspend fun getMovieByIdRemote(id: Int): Movie {
             return when (id) {
-                1 -> movieExample1
-                2 -> movieExample2
-                3 -> movieExample3
+                1 -> getMovieExample1()
+                2 -> getMovieExample2()
+                3 -> getMovieExample3()
                 else -> throw Exception("error message")
             }
         }
 
         override suspend fun getPopularMoviesRemote(): List<Movie> {
             if(!resourceAvailable) throw  Exception("error message")
-            return listOf(movieExample1, movieExample2, movieExample3)
+            return listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
         }
     }
 
@@ -90,46 +90,9 @@ class MoviesRepositoryTest {
     private lateinit var localMoviesSourceFake: LocalMoviesSource
     private val remoteMoviesSourceFake= RemoteMoviesSourceFake()
 
-    val movieExample1 = Movie(
-        1,
-        "Example title 1",
-        "Example overview 1",
-        "Example releaseDate 1",
-        "Example poster 1",
-        "Example backdrop 1",
-        "Example originalTitle 1",
-        "Example originalLanguage 1",
-        1.0,
-        1.0
-    )
-    val movieExample2 = Movie(
-        2,
-        "Example title 2",
-        "Example overview 2",
-        "Example releaseDate 2",
-        "Example poster 2",
-        "Example backdrop 2",
-        "Example originalTitle 2",
-        "Example originalLanguage 2",
-        2.0,
-        2.0
-    )
-    val movieExample3 = Movie(
-        3,
-        "Example title 3",
-        "Example overview 3",
-        "Example releaseDate 3",
-        "Example poster 3",
-        "Example backdrop 3",
-        "Example originalTitle 3",
-        "Example originalLanguage 3",
-        3.0,
-        3.0
-    )
-
     @BeforeTest
     fun setUp() {
-        val listOfPopularMovies = listOf(movieExample1, movieExample2, movieExample3)
+        val listOfPopularMovies = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
         localMoviesSourceFake = LocalMoviesSourceFake()
         localMoviesSourceFake.addMovies(listOfPopularMovies)
         remoteMoviesSourceFake.enableResource()
@@ -141,7 +104,7 @@ class MoviesRepositoryTest {
     @Test
     fun `test getPopularMovies returns from local source when local source isn't empty`() = runTest {
         //Arrange
-        val expected = listOf(movieExample1, movieExample2, movieExample3)
+        val expected = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
 
         //Act
         val result = moviesRepository.getPopularMovies()
@@ -154,7 +117,7 @@ class MoviesRepositoryTest {
     fun `test getPopularMovies returns from remote source when local source is empty`() = runTest {
         //Arrange
         localMoviesSourceFake.addMovies(emptyList())
-        val expected = listOf(movieExample1, movieExample2, movieExample3)
+        val expected = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
 
         //Act
         val result = moviesRepository.getPopularMovies()
@@ -194,7 +157,7 @@ class MoviesRepositoryTest {
     @Test
     fun `test getMovieById with valid id returns the correct movie`() = runTest {
         //Arrange
-        val expected = movieExample1
+        val expected = getMovieExample1()
 
         //Act
         val result = moviesRepository.getMovieDetailById(1)
