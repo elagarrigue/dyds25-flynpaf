@@ -21,6 +21,7 @@ private fun getMovieExample1() = Movie(
     1.0,
     1.0
 )
+
 private fun getMovieExample2() = Movie(
     2,
     "Example title 2",
@@ -33,6 +34,7 @@ private fun getMovieExample2() = Movie(
     2.0,
     2.0
 )
+
 private fun getMovieExample3() = Movie(
     3,
     "Example title 3",
@@ -65,9 +67,11 @@ class MoviesRepositoryTest {
     }
 
     class RemoteMoviesSourceFake() : RemoteMoviesSource {
-        private var resourceAvailable= true
+        private var resourceAvailable = true
 
-        fun disableResource() { resourceAvailable = false}
+        fun disableResource() {
+            resourceAvailable = false
+        }
 
         override suspend fun getMovieByIdRemote(id: Int): Movie {
             return when (id) {
@@ -79,7 +83,7 @@ class MoviesRepositoryTest {
         }
 
         override suspend fun getPopularMoviesRemote(): List<Movie> {
-            if(!resourceAvailable) throw  Exception("error message")
+            if (!resourceAvailable) throw Exception("error message")
             return listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
         }
     }
@@ -112,28 +116,19 @@ class MoviesRepositoryTest {
     }
 
     @Test
-    fun `test getPopularMovies returns from remote source when local source is empty`() = runTest {
-        //Arrange
-        val expected = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
+    fun `test getPopularMovies returns from remote source when local source is empty and side effect is executed`() =
+        runTest {
+            //Arrange
+            val expected = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
 
-        //Act
-        val result = moviesRepository.getPopularMovies()
+            //Act
+            val result = moviesRepository.getPopularMovies()
 
-        //Assert
-        assertEquals(expected, result)
-    }
+            //Assert
+            assertEquals(expected, result)
+            assertEquals(expected, localMoviesSourceFake.getMovieList())
 
-    @Test
-    fun `test getPopularMovies saves movies to local source after retrieving from remote source`() = runTest {
-        //Arrange
-
-        //Act
-        val expected = moviesRepository.getPopularMovies()
-        val result = localMoviesSourceFake.getMovieList()
-        //Assert
-
-        assertEquals(expected, result)
-    }
+        }
 
     @Test
     fun `test getPopularMovies remote returns empty list when resource is unavailable`() = runTest {
