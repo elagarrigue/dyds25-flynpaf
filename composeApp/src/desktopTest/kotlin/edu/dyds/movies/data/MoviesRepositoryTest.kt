@@ -67,8 +67,6 @@ class MoviesRepositoryTest {
     class RemoteMoviesSourceFake() : RemoteMoviesSource {
         private var resourceAvailable= true
 
-        fun enableResource() { resourceAvailable = true }
-
         fun disableResource() { resourceAvailable = false}
 
         override suspend fun getMovieByIdRemote(id: Int): Movie {
@@ -88,14 +86,12 @@ class MoviesRepositoryTest {
 
     private lateinit var moviesRepository: MoviesRepository
     private lateinit var localMoviesSourceFake: LocalMoviesSource
-    private val remoteMoviesSourceFake= RemoteMoviesSourceFake()
+    private lateinit var remoteMoviesSourceFake: RemoteMoviesSourceFake
 
     @BeforeTest
     fun setUp() {
-        val listOfPopularMovies = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
         localMoviesSourceFake = LocalMoviesSourceFake()
-        localMoviesSourceFake.addMovies(listOfPopularMovies)
-        remoteMoviesSourceFake.enableResource()
+        remoteMoviesSourceFake = RemoteMoviesSourceFake()
         moviesRepository = MoviesRepositoryImpl(
             localMoviesSourceFake, remoteMoviesSourceFake
         )
@@ -104,6 +100,8 @@ class MoviesRepositoryTest {
     @Test
     fun `test getPopularMovies returns from local source when local source isn't empty`() = runTest {
         //Arrange
+        val listOfPopularMovies = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
+        localMoviesSourceFake.addMovies(listOfPopularMovies)
         val expected = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
 
         //Act
@@ -116,7 +114,6 @@ class MoviesRepositoryTest {
     @Test
     fun `test getPopularMovies returns from remote source when local source is empty`() = runTest {
         //Arrange
-        localMoviesSourceFake.addMovies(emptyList())
         val expected = listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
 
         //Act
@@ -129,7 +126,6 @@ class MoviesRepositoryTest {
     @Test
     fun `test getPopularMovies saves movies to local source after retrieving from remote source`() = runTest {
         //Arrange
-        localMoviesSourceFake.addMovies(emptyList())
 
         //Act
         val expected = moviesRepository.getPopularMovies()
@@ -142,7 +138,6 @@ class MoviesRepositoryTest {
     @Test
     fun `test getPopularMovies remote returns empty list when resource is unavailable`() = runTest {
         //Arrange
-        localMoviesSourceFake.addMovies(emptyList())
         remoteMoviesSourceFake.disableResource()
         val expected = emptyList<Movie>()
 
