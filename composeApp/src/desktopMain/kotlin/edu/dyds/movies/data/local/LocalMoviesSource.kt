@@ -3,26 +3,18 @@ package edu.dyds.movies.data.local
 import edu.dyds.movies.domain.entity.Movie
 
 interface LocalMoviesSource {
-    fun initializeMovieCache(popularMovies: List<Movie>): List<Movie>
-    fun searchMovie(id: Int): Movie?
-    fun cacheMovie(movie: Movie)
+    fun addMovies(popularMovies: List<Movie>)
+
     fun isEmpty(): Boolean
     fun getMovieList(): List<Movie>
 }
 
-class LocalMoviesSourceSourceImpl : LocalMoviesSource {
-    var cache: MutableList<Movie> = mutableListOf()
+class LocalMoviesSourceImpl : LocalMoviesSource {
+    private var cache: MutableList<Movie> = mutableListOf()
 
-    override fun searchMovie(id: Int): Movie? = cache.find { it.id == id }
-
-    override fun initializeMovieCache(popularMovies: List<Movie>): List<Movie> {
+    override fun addMovies(popularMovies: List<Movie>) {
         cache.clear()
         cache.addAll(popularMovies)
-        return popularMovies
-    }
-
-    override fun cacheMovie(movie: Movie) {
-        cache.add(movie)
     }
 
     override fun isEmpty(): Boolean {
