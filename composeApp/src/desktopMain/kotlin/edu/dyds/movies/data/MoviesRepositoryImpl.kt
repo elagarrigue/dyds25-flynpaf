@@ -11,8 +11,8 @@ class MoviesRepositoryImpl(
     private val remoteMoviesSource: RemoteMoviesSource
 ) : MoviesRepository {
 
-    override suspend fun getMovieDetailById(id: Int): Movie? = try {
-        remoteMoviesSource.getMovieByIdRemote(id)
+    override suspend fun getMovieDetailByTitle(title: String): Movie? = try {
+        remoteMoviesSource.getMovieByTitleRemote(title)
     } catch (e: Exception) {
         null
     }

@@ -16,12 +16,12 @@ class DetailScreenViewModel(
 
     val movieDetailStateFlow: Flow<MovieDetailUiState> = movieDetailStateMutableStateFlow
 
-    fun getMovieDetail(id: Int) {
+    fun getMovieDetail(title: String) {
         viewModelScope.launch {
             movieDetailStateMutableStateFlow.emit(
                 MovieDetailUiState(
                     isLoading = false,
-                    movie = movieDetailsGetter.getMovieDetails(id)
+                    movie = movieDetailsGetter.getMovieDetails(title)
                 )
             )
         }
