@@ -32,15 +32,15 @@ class DetailScreenViewModelTest {
     }
 
     private val getMovieDetailsUseCase = object : GetMovieDetailsUseCase {
-        override suspend fun getMovieDetails(id: Int): Movie {
+        override suspend fun getMovieDetails(title: String): Movie {
             return Movie(
-                id,
-                "Movie $id",
-                "the movie $id overview",
+                1,
+                "Movie 1",
+                "the movie 1 overview",
                 "21/10/2023",
                 "poster url",
                 "backdrop url",
-                "Original Movie $id",
+                "Original Movie 1",
                 "en",
                 10.0,
                 8.0
@@ -61,7 +61,7 @@ class DetailScreenViewModelTest {
         }
 
         // Act
-        detailViewModel.getMovieDetail(1)
+        detailViewModel.getMovieDetail("Movie 1")
 
         // Assert
         assertEquals(

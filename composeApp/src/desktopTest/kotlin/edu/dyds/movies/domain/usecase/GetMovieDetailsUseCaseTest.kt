@@ -56,7 +56,7 @@ class GetMovieDetailsUseCaseTest {
         val getMovieDetailsUseCase = GetMovieDetailsUseCaseImpl(getFakeMovieRepository)
 
         //Act
-        val result = getMovieDetailsUseCase.getMovieDetails(3)
+        val result = getMovieDetailsUseCase.getMovieDetails("Example title 3")
 
         //Asset
         assertEquals(movieExample3, result)

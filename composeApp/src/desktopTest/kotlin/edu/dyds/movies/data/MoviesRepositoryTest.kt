@@ -73,11 +73,11 @@ class MoviesRepositoryTest {
             resourceAvailable = false
         }
 
-        override suspend fun getMovieByIdRemote(id: Int): Movie {
-            return when (id) {
-                1 -> getMovieExample1()
-                2 -> getMovieExample2()
-                3 -> getMovieExample3()
+        override suspend fun getMovieByTitleRemote(title: String): Movie {
+            return when (title) {
+                "Example title 1" -> getMovieExample1()
+                "Example title 2" -> getMovieExample2()
+                "Example title 3" -> getMovieExample3()
                 else -> throw Exception("error message")
             }
         }
@@ -150,7 +150,7 @@ class MoviesRepositoryTest {
         val expected = getMovieExample1()
 
         //Act
-        val result = moviesRepository.getMovieDetailById(1)
+        val result = moviesRepository.getMovieDetailByTitle("Example title 1")
 
         // Assert
         assertEquals(expected, result)
@@ -162,7 +162,7 @@ class MoviesRepositoryTest {
         val expected = null
 
         //Act
-        val result = moviesRepository.getMovieDetailById(4)
+        val result = moviesRepository.getMovieDetailByTitle("Example title 4")
 
         //Assert
         assertEquals(expected, result)
