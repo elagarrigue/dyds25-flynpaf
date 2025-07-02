@@ -1,6 +1,7 @@
 package edu.dyds.movies.data
 
-import edu.dyds.movies.data.external.tmdb.RemoteMoviesSource
+import edu.dyds.movies.data.external.RemoteMovieDetailSource
+import edu.dyds.movies.data.external.RemotePopularMoviesSource
 import edu.dyds.movies.data.local.LocalMoviesSource
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.repository.MoviesRepository
@@ -66,13 +67,20 @@ class MoviesRepositoryTest {
         }
     }
 
-    class RemoteMoviesSourceFake() : RemoteMoviesSource {
+    class RemotePopularMoviesSourceFake() : RemotePopularMoviesSource {
         private var resourceAvailable = true
 
         fun disableResource() {
             resourceAvailable = false
         }
 
+        override suspend fun getPopularMoviesRemote(): List<Movie> {
+            if (!resourceAvailable) throw Exception("error message")
+            return listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
+        }
+    }
+
+    class RemoteMovieDetailsSourceFake() : RemoteMovieDetailSource {
         override suspend fun getMovieByTitleRemote(title: String): Movie {
             return when (title) {
                 "Example title 1" -> getMovieExample1()
@@ -82,22 +90,20 @@ class MoviesRepositoryTest {
             }
         }
 
-        override suspend fun getPopularMoviesRemote(): List<Movie> {
-            if (!resourceAvailable) throw Exception("error message")
-            return listOf(getMovieExample1(), getMovieExample2(), getMovieExample3())
-        }
     }
 
     private lateinit var moviesRepository: MoviesRepository
     private lateinit var localMoviesSourceFake: LocalMoviesSource
-    private lateinit var remoteMoviesSourceFake: RemoteMoviesSourceFake
+    private lateinit var remotePopularMoviesSourceFake: RemotePopularMoviesSourceFake
+    private lateinit var remoteMovieDetailsSourceFake: RemoteMovieDetailSource
 
     @BeforeTest
     fun setUp() {
         localMoviesSourceFake = LocalMoviesSourceFake()
-        remoteMoviesSourceFake = RemoteMoviesSourceFake()
+        remotePopularMoviesSourceFake = RemotePopularMoviesSourceFake()
+        remoteMovieDetailsSourceFake = RemoteMovieDetailsSourceFake()
         moviesRepository = MoviesRepositoryImpl(
-            localMoviesSourceFake, remoteMoviesSourceFake
+            localMoviesSourceFake, remoteMovieDetailsSourceFake, remotePopularMoviesSourceFake
         )
     }
 
@@ -133,7 +139,7 @@ class MoviesRepositoryTest {
     @Test
     fun `test getPopularMovies remote returns empty list when resource is unavailable`() = runTest {
         //Arrange
-        remoteMoviesSourceFake.disableResource()
+        remotePopularMoviesSourceFake.disableResource()
         val expected = emptyList<Movie>()
 
         //Act
