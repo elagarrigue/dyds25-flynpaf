@@ -1,7 +1,7 @@
 package edu.dyds.movies.data
 
-import edu.dyds.movies.data.external.tmdb.RemoteMoviesDetailSource
-import edu.dyds.movies.data.external.tmdb.RemotePopularMoviesSource
+import edu.dyds.movies.data.external.RemoteMovieDetailSource
+import edu.dyds.movies.data.external.RemotePopularMoviesSource
 import edu.dyds.movies.data.local.LocalMoviesSource
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.repository.MoviesRepository
@@ -9,7 +9,7 @@ import edu.dyds.movies.domain.repository.MoviesRepository
 
 class MoviesRepositoryImpl(
     private val localMoviesSource: LocalMoviesSource,
-    private val moviesDetailSource: RemoteMoviesDetailSource,
+    private val moviesDetailSource: RemoteMovieDetailSource,
     private val moviesPopularSource: RemotePopularMoviesSource
 ) : MoviesRepository {
 
