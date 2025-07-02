@@ -1,6 +1,6 @@
 package edu.dyds.movies.data
 
-import edu.dyds.movies.data.external.RemoteMoviesSource
+import edu.dyds.movies.data.external.tmdb.RemoteMoviesSource
 import edu.dyds.movies.data.local.LocalMoviesSource
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.repository.MoviesRepository

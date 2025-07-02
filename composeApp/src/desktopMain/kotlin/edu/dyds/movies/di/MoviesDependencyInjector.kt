@@ -3,7 +3,7 @@ package edu.dyds.movies.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.dyds.movies.data.MoviesRepositoryImpl
-import edu.dyds.movies.data.external.RemoteMoviesSourceImpl
+import edu.dyds.movies.data.external.tmdb.TMDBMoviesExternalSource
 import edu.dyds.movies.data.local.LocalMoviesSourceImpl
 import edu.dyds.movies.domain.repository.MoviesRepository
 import edu.dyds.movies.domain.usecase.GetMovieDetailsUseCase
@@ -44,7 +44,7 @@ object MoviesDependencyInjector {
 
     private var repository: MoviesRepository = MoviesRepositoryImpl(
         LocalMoviesSourceImpl(),
-        RemoteMoviesSourceImpl(tmdbHttpClient)
+        TMDBMoviesExternalSource(tmdbHttpClient)
     )
 
     @Composable

@@ -1,5 +1,6 @@
-package edu.dyds.movies.data.external
+package edu.dyds.movies.data.external.tmdb
 
+import edu.dyds.movies.data.external.RemoteResult
 import edu.dyds.movies.domain.entity.Movie
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -11,7 +12,7 @@ interface RemoteMoviesSource{
 
 }
 
-class RemoteMoviesSourceImpl(
+class TMDBMoviesExternalSource(
     private val tmdbHttpClient: HttpClient,
     ):RemoteMoviesSource {
 
@@ -23,7 +24,7 @@ class RemoteMoviesSourceImpl(
         remoteResultToMovieList(getTMDBPopularMovies())
 
 
-    private fun remoteResultToMovieList(remoteResult: RemoteResult ): List<Movie> = remoteResult.results.map { it.toDomainMovie() }
+    private fun remoteResultToMovieList(remoteResult: RemoteResult): List<Movie> = remoteResult.results.map { it.toDomainMovie() }
 
     private suspend fun getTMDBMovieDetails(title: String): RemoteResult =
         tmdbHttpClient.get("/3/search/movie?query=$title").body()
