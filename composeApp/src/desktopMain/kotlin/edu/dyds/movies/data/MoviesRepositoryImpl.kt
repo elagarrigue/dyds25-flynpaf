@@ -1,6 +1,7 @@
 package edu.dyds.movies.data
 
-import edu.dyds.movies.data.external.tmdb.RemoteMoviesSource
+import edu.dyds.movies.data.external.tmdb.RemoteMoviesDetailSource
+import edu.dyds.movies.data.external.tmdb.RemotePopularMoviesSource
 import edu.dyds.movies.data.local.LocalMoviesSource
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.repository.MoviesRepository
@@ -8,11 +9,12 @@ import edu.dyds.movies.domain.repository.MoviesRepository
 
 class MoviesRepositoryImpl(
     private val localMoviesSource: LocalMoviesSource,
-    private val remoteMoviesSource: RemoteMoviesSource
+    private val moviesDetailSource: RemoteMoviesDetailSource,
+    private val moviesPopularSource: RemotePopularMoviesSource
 ) : MoviesRepository {
 
     override suspend fun getMovieDetailByTitle(title: String): Movie? = try {
-        remoteMoviesSource.getMovieByTitleRemote(title)
+        moviesDetailSource.getMovieByTitleRemote(title)
     } catch (e: Exception) {
         null
     }
@@ -34,7 +36,7 @@ class MoviesRepositoryImpl(
         return movies
     }
 
-    private suspend fun getMoviesFromRemoteSource(): List<Movie> = remoteMoviesSource.getPopularMoviesRemote()
+    private suspend fun getMoviesFromRemoteSource(): List<Movie> = moviesPopularSource.getPopularMoviesRemote()
 
     private fun saveMoviesToLocalSource(movies: List<Movie>) {
         localMoviesSource.addMovies(movies)

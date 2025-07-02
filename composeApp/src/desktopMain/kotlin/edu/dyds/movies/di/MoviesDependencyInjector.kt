@@ -42,9 +42,12 @@ object MoviesDependencyInjector {
             }
         }
 
+    private var tmdbSource = TMDBMoviesExternalSource(tmdbHttpClient)
+
     private var repository: MoviesRepository = MoviesRepositoryImpl(
-        LocalMoviesSourceImpl(),
-        TMDBMoviesExternalSource(tmdbHttpClient)
+        localMoviesSource = LocalMoviesSourceImpl(),
+        moviesDetailSource = tmdbSource,
+        moviesPopularSource = tmdbSource,
     )
 
     @Composable

@@ -6,15 +6,17 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
-interface RemoteMoviesSource{
+interface RemoteMoviesDetailSource {
     suspend fun getMovieByTitleRemote(title: String): Movie?
-    suspend fun getPopularMoviesRemote(): List<Movie>
+}
 
+interface RemotePopularMoviesSource {
+    suspend fun getPopularMoviesRemote(): List<Movie>
 }
 
 class TMDBMoviesExternalSource(
     private val tmdbHttpClient: HttpClient,
-    ):RemoteMoviesSource {
+    ):RemoteMoviesDetailSource, RemotePopularMoviesSource{
 
     override suspend fun getMovieByTitleRemote(title: String): Movie =
         getTMDBMovieDetails(title).apply { println(this) }.results.first().toDomainMovie()
