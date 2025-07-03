@@ -3,6 +3,7 @@ package edu.dyds.movies.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.dyds.movies.data.MoviesRepositoryImpl
+import edu.dyds.movies.data.external.omdb.OMDBMovieExternalSource
 import edu.dyds.movies.data.external.tmdb.TMDBMovieExternalSource
 import edu.dyds.movies.data.local.LocalMoviesSourceImpl
 import edu.dyds.movies.domain.repository.MoviesRepository
@@ -20,8 +21,28 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 private const val API_KEY = "d18da1b5da16397619c688b0263cd281"
+private const val OMDB_API_KEY = "contraseña"
 
 object MoviesDependencyInjector {
+
+    private val omdbHttpClient =
+        HttpClient {
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
+            }
+            install(DefaultRequest) {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = "www.omdbapi.com"
+                    parameters.append("api_key", OMDB_API_KEY)
+                }
+            }
+            install(HttpTimeout) {
+                requestTimeoutMillis = 5000
+            }
+        }
 
     private val tmdbHttpClient =
         HttpClient {
@@ -43,6 +64,8 @@ object MoviesDependencyInjector {
         }
 
     private var tmdbSource = TMDBMovieExternalSource(tmdbHttpClient)
+
+    private var omdbSource = OMDBMovieExternalSource(omdbHttpClient)
 
     private var repository: MoviesRepository = MoviesRepositoryImpl(
         localMoviesSource = LocalMoviesSourceImpl(),
