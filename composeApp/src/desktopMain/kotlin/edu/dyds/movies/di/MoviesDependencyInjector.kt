@@ -3,6 +3,7 @@ package edu.dyds.movies.di
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import edu.dyds.movies.data.MoviesRepositoryImpl
+import edu.dyds.movies.data.external.broker.Broker
 import edu.dyds.movies.data.external.omdb.OMDBMovieExternalSource
 import edu.dyds.movies.data.external.tmdb.TMDBMovieExternalExternalSource
 import edu.dyds.movies.data.local.LocalMoviesSourceImpl
@@ -65,9 +66,11 @@ object MoviesDependencyInjector {
 
     private var omdbSource = OMDBMovieExternalSource(omdbHttpClient)
 
+    private var brokerSource = Broker(tmdbSource,omdbSource)
+
     private var repository: MoviesRepository = MoviesRepositoryImpl(
         localMoviesSource = LocalMoviesSourceImpl(),
-        moviesDetailSource = omdbSource,
+        moviesDetailSource = brokerSource,
         moviesPopularSource = tmdbSource,
     )
 

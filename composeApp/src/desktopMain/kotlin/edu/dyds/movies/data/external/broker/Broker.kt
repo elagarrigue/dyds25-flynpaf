@@ -24,7 +24,12 @@ class Broker (
             null
         }
 
-        return null
+        return when{
+            (tmdb != null && omdb != null) -> buildMovie(tmdb,omdb)
+            (tmdb != null) -> tmdb
+            (omdb != null) -> omdb
+            else -> null
+        }
     }
 
     private fun buildMovie(

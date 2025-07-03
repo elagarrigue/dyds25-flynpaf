@@ -19,7 +19,7 @@ data class RemoteMovie(
         return Movie(
             id = title.hashCode(),
             title = title,
-            overview = plot,
+            overview = "OMDB: $plot",
             releaseDate = if (released.isNotEmpty() && released != "N/A") released else year,
             poster = poster,
             backdrop = poster,
