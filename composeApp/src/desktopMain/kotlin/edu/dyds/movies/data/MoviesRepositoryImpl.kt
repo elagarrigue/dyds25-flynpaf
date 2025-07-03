@@ -1,7 +1,7 @@
 package edu.dyds.movies.data
 
-import edu.dyds.movies.data.external.RemoteMovieDetailSource
-import edu.dyds.movies.data.external.RemotePopularMoviesSource
+import edu.dyds.movies.data.external.MovieExternalSource
+import edu.dyds.movies.data.external.MoviesExternalSource
 import edu.dyds.movies.data.local.LocalMoviesSource
 import edu.dyds.movies.domain.entity.Movie
 import edu.dyds.movies.domain.repository.MoviesRepository
@@ -9,8 +9,8 @@ import edu.dyds.movies.domain.repository.MoviesRepository
 
 class MoviesRepositoryImpl(
     private val localMoviesSource: LocalMoviesSource,
-    private val moviesDetailSource: RemoteMovieDetailSource,
-    private val moviesPopularSource: RemotePopularMoviesSource
+    private val moviesDetailSource: MovieExternalSource,
+    private val moviesPopularSource: MoviesExternalSource
 ) : MoviesRepository {
 
     override suspend fun getMovieDetailByTitle(title: String): Movie? = try {
@@ -19,16 +19,14 @@ class MoviesRepositoryImpl(
         null
     }
 
-    override suspend fun getPopularMovies(): List<Movie> =
-        if (localMoviesSource.isEmpty()) getMovies()
-        else localMoviesSource.getMovieList()
+    override suspend fun getPopularMovies(): List<Movie> = if (localMoviesSource.isEmpty()) getMovies()
+    else localMoviesSource.getMovieList()
 
-    private suspend fun getMovies(): List<Movie> =
-        try {
-            getMoviesFromRemoteSourceAndSaveToLocalSource()
-        } catch (e: Exception) {
-            emptyList()
-        }
+    private suspend fun getMovies(): List<Movie> = try {
+        getMoviesFromRemoteSourceAndSaveToLocalSource()
+    } catch (e: Exception) {
+        emptyList()
+    }
 
     private suspend fun getMoviesFromRemoteSourceAndSaveToLocalSource(): List<Movie> {
         val movies = getMoviesFromRemoteSource()
