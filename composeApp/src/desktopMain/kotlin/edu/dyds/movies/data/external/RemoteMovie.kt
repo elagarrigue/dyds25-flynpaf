@@ -9,13 +9,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RemoteResult(
     val page: Int,
-    val results: List<RemoteMovie>,
+    val results: List<tmdbRemoteMovie>,
     @SerialName("total_pages") val totalPages: Int,
     @SerialName("total_results") val totalResults: Int
 )
 
 @Serializable
-data class RemoteMovie(
+data class tmdbRemoteMovie(
     val id: Int,
     val title: String,
     val overview: String,
@@ -44,9 +44,9 @@ data class RemoteMovie(
     }
 }
 
-/*
+
 @Serializable
-data class OMDBRemoteMovie(
+data class RemoteMovie(
     @SerialName("Title") val title: String,
     @SerialName("Plot") val plot: String,
     @SerialName("Released") val released: String,
@@ -71,4 +71,4 @@ data class OMDBRemoteMovie(
         )
     }
 }
-*/
+
