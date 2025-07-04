@@ -35,7 +35,7 @@ class Broker(
         return Movie(
             id = tmdbMovie.id,
             title = tmdbMovie.title,
-            overview = "${tmdbMovie.overview}\n\n ${omdbMovie.overview}",
+            overview = "${tmdbMovie.overview}\n\n${omdbMovie.overview}",
             releaseDate = tmdbMovie.releaseDate,
             poster = tmdbMovie.poster,
             backdrop = tmdbMovie.backdrop,
