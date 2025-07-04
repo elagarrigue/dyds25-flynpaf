@@ -35,7 +35,7 @@ private fun getOMDBMovieExample(): Movie = Movie(
 private fun getCombinedMovieExample(): Movie = Movie(
     1,
     "Movie 1",
-    "TMDB: the movie 1 overview\n\n OMDB: the movie 1 overview",
+    "TMDB: the movie 1 overview\n\nOMDB: the movie 1 overview",
     "21/10/2023",
     "poster url",
     "backdrop url",
