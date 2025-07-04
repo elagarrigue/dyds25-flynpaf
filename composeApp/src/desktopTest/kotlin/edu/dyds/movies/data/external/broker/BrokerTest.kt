@@ -115,7 +115,7 @@ class BrokerTest{
         )
         //Act
         val expected = null
-        val result = null
+        val result = brokerSource.getMovieByTitleRemote("None")
         //Assert
         assertEquals(expected,result)
     }
