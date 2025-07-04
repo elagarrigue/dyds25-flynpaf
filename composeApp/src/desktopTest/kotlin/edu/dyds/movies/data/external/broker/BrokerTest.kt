@@ -2,6 +2,9 @@ package edu.dyds.movies.data.external.broker
 
 import edu.dyds.movies.data.external.MovieExternalSource
 import edu.dyds.movies.domain.entity.Movie
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 private fun getTMDBMovieExample(): Movie = Movie(
     1,
@@ -17,7 +20,7 @@ private fun getTMDBMovieExample(): Movie = Movie(
 )
 
 private fun getOMDBMovieExample(): Movie = Movie(
-    "Movie 1".hashCode(),
+    "Movie OMDB".hashCode(),
     "Movie 1",
     "OMDB: the movie 1 overview",
     "2023",
@@ -61,16 +64,61 @@ class BrokerTest{
         }
     }
 
-    private lateinit var broker: MovieExternalSource
+    @Test
+    fun `test Ambas APIs Funcionan`() = runTest{
+        //Arrange
+        val brokerSource = Broker(
+            tmdbMovieExternalSourceFake,
+            omdbMovieExternalSourceFake
+        )
+        //Act
+        val expected = getCombinedMovieExample()
+        val result = brokerSource.getMovieByTitleRemote("Movie 1")
+        //Assert
+        assertEquals(expected,result)
+    }
 
+    @Test
+    fun `test solo TMDB`() = runTest {
+        //Arrange
+        val brokerSource = Broker(
+            tmdbMovieExternalSourceFake,
+            movieExternalSourceResourceUnavailableFake
+        )
+        //Act
+        val expected = getTMDBMovieExample()
+        val result = brokerSource.getMovieByTitleRemote("Movie 1")
+        //Assert
+        assertEquals(expected,result)
+    }
 
-    /* TODO: Test ambos servicios funcionan, inicializar el broker con los fakes correctos y fijarse que lo que devuelve es igual a getCombinedMovieExample() */
+    @Test
+    fun `test solo OMDB`() = runTest {
+        //Arrange
+        val brokerSource = Broker(
+            movieExternalSourceResourceUnavailableFake,
+            omdbMovieExternalSourceFake
+        )
+        //Act
+        val expected = getOMDBMovieExample()
+        val result = brokerSource.getMovieByTitleRemote("Movie 1")
+        //Assert
+        assertEquals(expected,result)
+    }
 
-    /* TODO: Test solo tmdb funciona, incializar el broker con el fake tmdb correcto y el unavailable en el campo de omdb, fijarse que lo que devuelve es igual a getTMDBMovieExample() */
-
-    /* TODO: Test solo omdb funciona, incializar el broker con el fake omdb correcto y el unavailable en el campo de tmdb, fijarse que lo que devuelve es igual a getOMDBMovieExample() */
-
-    /* TODO: Test ninguno de los servicios funciona, inicializar el broker con el fake unavailable en ambos campos y fijarse que devuelve null */
+    @Test
+    fun `test no funciona ninguna API`() = runTest {
+        //Arrange
+        val brokerSource = Broker(
+            movieExternalSourceResourceUnavailableFake,
+            movieExternalSourceResourceUnavailableFake
+        )
+        //Act
+        val expected = null
+        val result = null
+        //Assert
+        assertEquals(expected,result)
+    }
 
 }
 

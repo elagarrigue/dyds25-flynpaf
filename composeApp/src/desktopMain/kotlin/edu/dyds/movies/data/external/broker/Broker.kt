@@ -1,14 +1,12 @@
 package edu.dyds.movies.data.external.broker
 
 import edu.dyds.movies.data.external.MovieExternalSource
-import edu.dyds.movies.data.external.omdb.OMDBMovieExternalSource
-import edu.dyds.movies.data.external.tmdb.TMDBMovieExternalExternalSource
 import edu.dyds.movies.domain.entity.Movie
 
 
 class Broker (
-    private val tmdbMovieSource: TMDBMovieExternalExternalSource,
-    private val omdbMovieSource: OMDBMovieExternalSource
+    private val tmdbMovieSource: MovieExternalSource,
+    private val omdbMovieSource: MovieExternalSource
 ) : MovieExternalSource {
 
     override suspend fun getMovieByTitleRemote(title : String) : Movie? {
@@ -37,7 +35,7 @@ class Broker (
         return Movie(
             id = tmdbMovie.id,
             title = tmdbMovie.title,
-            overview = "TMDB: ${tmdbMovie.overview}\n\n OMDB: ${omdbMovie.overview}",
+            overview = "${tmdbMovie.overview}\n\n ${omdbMovie.overview}",
             releaseDate = tmdbMovie.releaseDate,
             poster = tmdbMovie.poster,
             backdrop = tmdbMovie.backdrop,
