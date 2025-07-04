@@ -14,9 +14,7 @@ class TMDBMovieExternalExternalSource(
     override suspend fun getMovieByTitleRemote(title: String): Movie =
         getTMDBMovieDetails(title).apply { println(this) }.results.first().toDomainMovie()
 
-
     override suspend fun getPopularMoviesRemote(): List<Movie> = remoteResultToMovieList(getTMDBPopularMovies())
-
 
     private fun remoteResultToMovieList(remoteResult: RemoteResult): List<Movie> =
         remoteResult.results.map { it.toDomainMovie() }
@@ -26,5 +24,4 @@ class TMDBMovieExternalExternalSource(
 
     private suspend fun getTMDBPopularMovies(): RemoteResult =
         tmdbHttpClient.get("/3/discover/movie?sort_by=popularity.desc").body()
-
 }

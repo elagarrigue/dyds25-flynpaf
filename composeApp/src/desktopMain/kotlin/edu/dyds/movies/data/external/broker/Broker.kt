@@ -3,13 +3,12 @@ package edu.dyds.movies.data.external.broker
 import edu.dyds.movies.data.external.MovieExternalSource
 import edu.dyds.movies.domain.entity.Movie
 
-
-class Broker (
+class Broker(
     private val tmdbMovieSource: MovieExternalSource,
     private val omdbMovieSource: MovieExternalSource
 ) : MovieExternalSource {
 
-    override suspend fun getMovieByTitleRemote(title : String) : Movie? {
+    override suspend fun getMovieByTitleRemote(title: String): Movie? {
         val tmdb = try {
             tmdbMovieSource.getMovieByTitleRemote(title)
         } catch (e: Exception) {
@@ -22,8 +21,8 @@ class Broker (
             null
         }
 
-        return when{
-            (tmdb != null && omdb != null) -> buildMovie(tmdb,omdb)
+        return when {
+            (tmdb != null && omdb != null) -> buildMovie(tmdb, omdb)
             (tmdb != null) -> tmdb
             (omdb != null) -> omdb
             else -> null
@@ -31,7 +30,8 @@ class Broker (
     }
 
     private fun buildMovie(
-        tmdbMovie: Movie, omdbMovie: Movie ): Movie {
+        tmdbMovie: Movie, omdbMovie: Movie
+    ): Movie {
         return Movie(
             id = tmdbMovie.id,
             title = tmdbMovie.title,

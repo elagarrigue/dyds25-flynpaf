@@ -45,27 +45,25 @@ private fun getCombinedMovieExample(): Movie = Movie(
     7.0
 )
 
-
-
-class BrokerTest{
+class BrokerTest {
     private val tmdbMovieExternalSourceFake = object : MovieExternalSource {
         override suspend fun getMovieByTitleRemote(title: String): Movie {
             return getTMDBMovieExample()
         }
     }
-    private val omdbMovieExternalSourceFake = object: MovieExternalSource {
+    private val omdbMovieExternalSourceFake = object : MovieExternalSource {
         override suspend fun getMovieByTitleRemote(title: String): Movie {
             return getOMDBMovieExample()
         }
     }
-    private val movieExternalSourceResourceUnavailableFake = object: MovieExternalSource{
+    private val movieExternalSourceResourceUnavailableFake = object : MovieExternalSource {
         override suspend fun getMovieByTitleRemote(title: String): Movie {
             throw Exception("error message")
         }
     }
 
     @Test
-    fun `test both APIs work`() = runTest{
+    fun `test both APIs work`() = runTest {
         //Arrange
         val brokerSource = Broker(
             tmdbMovieExternalSourceFake,
@@ -75,7 +73,7 @@ class BrokerTest{
         val expected = getCombinedMovieExample()
         val result = brokerSource.getMovieByTitleRemote("Movie 1")
         //Assert
-        assertEquals(expected,result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -89,7 +87,7 @@ class BrokerTest{
         val expected = getTMDBMovieExample()
         val result = brokerSource.getMovieByTitleRemote("Movie 1")
         //Assert
-        assertEquals(expected,result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -103,7 +101,7 @@ class BrokerTest{
         val expected = getOMDBMovieExample()
         val result = brokerSource.getMovieByTitleRemote("Movie 1")
         //Assert
-        assertEquals(expected,result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -117,7 +115,7 @@ class BrokerTest{
         val expected = null
         val result = brokerSource.getMovieByTitleRemote("None")
         //Assert
-        assertEquals(expected,result)
+        assertEquals(expected, result)
     }
 
 }

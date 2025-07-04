@@ -7,12 +7,12 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 
 
-class OMDBMovieExternalSource (
+class OMDBMovieExternalSource(
     private val omdbHttpClient: HttpClient
-): MovieExternalSource{
+) : MovieExternalSource {
 
     override suspend fun getMovieByTitleRemote(title: String): Movie? =
-       getOMDBMovieDetails(title).toDomainMovie()
+        getOMDBMovieDetails(title).toDomainMovie()
 
 
     private suspend fun getOMDBMovieDetails(title: String): RemoteMovie =
