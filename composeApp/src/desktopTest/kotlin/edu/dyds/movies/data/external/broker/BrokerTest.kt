@@ -65,7 +65,7 @@ class BrokerTest{
     }
 
     @Test
-    fun `test Ambas APIs Funcionan`() = runTest{
+    fun `test both APIs work`() = runTest{
         //Arrange
         val brokerSource = Broker(
             tmdbMovieExternalSourceFake,
@@ -79,7 +79,7 @@ class BrokerTest{
     }
 
     @Test
-    fun `test solo TMDB`() = runTest {
+    fun `test only TMDB is working`() = runTest {
         //Arrange
         val brokerSource = Broker(
             tmdbMovieExternalSourceFake,
@@ -93,7 +93,7 @@ class BrokerTest{
     }
 
     @Test
-    fun `test solo OMDB`() = runTest {
+    fun `test only OMDB is working`() = runTest {
         //Arrange
         val brokerSource = Broker(
             movieExternalSourceResourceUnavailableFake,
@@ -107,7 +107,7 @@ class BrokerTest{
     }
 
     @Test
-    fun `test no funciona ninguna API`() = runTest {
+    fun `test none of the APIs work`() = runTest {
         //Arrange
         val brokerSource = Broker(
             movieExternalSourceResourceUnavailableFake,
