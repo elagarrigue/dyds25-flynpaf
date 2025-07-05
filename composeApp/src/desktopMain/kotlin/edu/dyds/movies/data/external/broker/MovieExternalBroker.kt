@@ -1,4 +1,4 @@
-package edu.dyds.movies.data.external.movieExternalBroker
+package edu.dyds.movies.data.external.broker
 
 import edu.dyds.movies.data.external.MovieExternalSource
 import edu.dyds.movies.domain.entity.Movie

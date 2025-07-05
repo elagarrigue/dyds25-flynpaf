@@ -1,4 +1,4 @@
-package edu.dyds.movies.data.external.movieExternalBroker
+package edu.dyds.movies.data.external.broker
 
 import edu.dyds.movies.data.external.MovieExternalSource
 import edu.dyds.movies.domain.entity.Movie
@@ -45,7 +45,7 @@ private fun getCombinedMovieExample(): Movie = Movie(
     7.0
 )
 
-class BrokerTest {
+class MovieExternalBrokerTest {
     private val tmdbMovieExternalSourceFake = object : MovieExternalSource {
         override suspend fun getMovieByTitleRemote(title: String): Movie {
             return getTMDBMovieExample()
