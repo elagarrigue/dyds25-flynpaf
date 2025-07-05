@@ -30,17 +30,17 @@ import edu.dyds.movies.presentation.utils.NoResults
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun DetailScreen(viewModel: DetailScreenViewModel, id: Int, onBack: () -> Unit) {
+fun DetailScreen(viewModel: DetailScreenViewModel, title: String, onBack: () -> Unit) {
 
     LaunchedEffect(Unit) {
-        viewModel.getMovieDetail(id)
+        viewModel.getMovieDetail(title)
     }
-    DetailContent(viewModel,id,onBack)
+    DetailContent(viewModel, title,onBack)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DetailContent(viewModel: DetailScreenViewModel, id: Int, onBack: () -> Unit){
+private fun DetailContent(viewModel: DetailScreenViewModel, title: String, onBack: () -> Unit){
     val state by viewModel.movieDetailStateFlow.collectAsState(DetailScreenViewModel.MovieDetailUiState())
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
@@ -60,7 +60,7 @@ private fun DetailContent(viewModel: DetailScreenViewModel, id: Int, onBack: () 
 
                 when {
                     state.movie != null -> MovieDetail(movie = state.movie!!, modifier = Modifier.padding(padding))
-                    state.isLoading.not() -> NoResults { viewModel.getMovieDetail(id) }
+                    state.isLoading.not() -> NoResults { viewModel.getMovieDetail(title) }
                 }
             }
         }

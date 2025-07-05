@@ -7,8 +7,8 @@ class FakeMovieRepository(
     private val fakeMovieList: List<Movie>
 ) : MoviesRepository {
 
-    override suspend fun getMovieDetailById(id: Int): Movie? {
-        return fakeMovieList.find { it.id == id }
+    override suspend fun getMovieDetailByTitle(title: String): Movie? {
+        return fakeMovieList.find { it.title == title }
     }
 
     override suspend fun getPopularMovies(): List<Movie> {

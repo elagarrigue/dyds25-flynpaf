@@ -5,12 +5,12 @@ import edu.dyds.movies.domain.repository.MoviesRepository
 
 
 interface GetMovieDetailsUseCase{
-    suspend fun getMovieDetails(id: Int): Movie?
+    suspend fun getMovieDetails(title: String): Movie?
 }
 
 class GetMovieDetailsUseCaseImpl(
     private val repository: MoviesRepository
 ): GetMovieDetailsUseCase{
-    override suspend fun getMovieDetails(id: Int) = repository.getMovieDetailById(id)
+    override suspend fun getMovieDetails(title: String) = repository.getMovieDetailByTitle(title)
 
 }
