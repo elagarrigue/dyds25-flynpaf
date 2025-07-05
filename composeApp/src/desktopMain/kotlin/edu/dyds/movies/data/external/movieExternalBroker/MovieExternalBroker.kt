@@ -4,22 +4,13 @@ import edu.dyds.movies.data.external.MovieExternalSource
 import edu.dyds.movies.domain.entity.Movie
 
 class MovieExternalBroker(
-    private val tmdbMovieSource: MovieExternalSource,
-    private val omdbMovieSource: MovieExternalSource
+    private val tmdbMovieSource: MovieExternalSource, private val omdbMovieSource: MovieExternalSource
 ) : MovieExternalSource {
 
     override suspend fun getMovieByTitleRemote(title: String): Movie? {
-        val tmdb = try {
-            tmdbMovieSource.getMovieByTitleRemote(title)
-        } catch (e: Exception) {
-            null
-        }
+        val tmdb = getTMDBMovieByTitle(title)
 
-        val omdb = try {
-            omdbMovieSource.getMovieByTitleRemote(title)
-        } catch (e: Exception) {
-            null
-        }
+        val omdb = getOMDBMovieByTitle(title)
 
         return when {
             (tmdb != null && omdb != null) -> buildMovie(tmdb, omdb)
@@ -27,6 +18,18 @@ class MovieExternalBroker(
             (omdb != null) -> omdb
             else -> null
         }
+    }
+
+    private suspend fun getOMDBMovieByTitle(title: String): Movie? = try {
+        omdbMovieSource.getMovieByTitleRemote(title)
+    } catch (e: Exception) {
+        null
+    }
+
+    private suspend fun getTMDBMovieByTitle(title: String): Movie? = try {
+        tmdbMovieSource.getMovieByTitleRemote(title)
+    } catch (e: Exception) {
+        null
     }
 
     private fun buildMovie(
