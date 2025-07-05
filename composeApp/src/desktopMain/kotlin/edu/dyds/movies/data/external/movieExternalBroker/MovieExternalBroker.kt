@@ -1,9 +1,9 @@
-package edu.dyds.movies.data.external.broker
+package edu.dyds.movies.data.external.movieExternalBroker
 
 import edu.dyds.movies.data.external.MovieExternalSource
 import edu.dyds.movies.domain.entity.Movie
 
-class Broker(
+class MovieExternalBroker(
     private val tmdbMovieSource: MovieExternalSource,
     private val omdbMovieSource: MovieExternalSource
 ) : MovieExternalSource {

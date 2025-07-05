@@ -1,4 +1,4 @@
-package edu.dyds.movies.data.external.broker
+package edu.dyds.movies.data.external.movieExternalBroker
 
 import edu.dyds.movies.data.external.MovieExternalSource
 import edu.dyds.movies.domain.entity.Movie
@@ -65,13 +65,13 @@ class BrokerTest {
     @Test
     fun `test both APIs work`() = runTest {
         //Arrange
-        val brokerSource = Broker(
+        val movieExternalBrokerSource = MovieExternalBroker(
             tmdbMovieExternalSourceFake,
             omdbMovieExternalSourceFake
         )
         //Act
         val expected = getCombinedMovieExample()
-        val result = brokerSource.getMovieByTitleRemote("Movie 1")
+        val result = movieExternalBrokerSource.getMovieByTitleRemote("Movie 1")
         //Assert
         assertEquals(expected, result)
     }
@@ -79,13 +79,13 @@ class BrokerTest {
     @Test
     fun `test only TMDB is working`() = runTest {
         //Arrange
-        val brokerSource = Broker(
+        val movieExternalBrokerSource = MovieExternalBroker(
             tmdbMovieExternalSourceFake,
             movieExternalSourceResourceUnavailableFake
         )
         //Act
         val expected = getTMDBMovieExample()
-        val result = brokerSource.getMovieByTitleRemote("Movie 1")
+        val result = movieExternalBrokerSource.getMovieByTitleRemote("Movie 1")
         //Assert
         assertEquals(expected, result)
     }
@@ -93,13 +93,13 @@ class BrokerTest {
     @Test
     fun `test only OMDB is working`() = runTest {
         //Arrange
-        val brokerSource = Broker(
+        val movieExternalBrokerSource = MovieExternalBroker(
             movieExternalSourceResourceUnavailableFake,
             omdbMovieExternalSourceFake
         )
         //Act
         val expected = getOMDBMovieExample()
-        val result = brokerSource.getMovieByTitleRemote("Movie 1")
+        val result = movieExternalBrokerSource.getMovieByTitleRemote("Movie 1")
         //Assert
         assertEquals(expected, result)
     }
@@ -107,13 +107,13 @@ class BrokerTest {
     @Test
     fun `test none of the APIs work`() = runTest {
         //Arrange
-        val brokerSource = Broker(
+        val movieExternalBrokerSource = MovieExternalBroker(
             movieExternalSourceResourceUnavailableFake,
             movieExternalSourceResourceUnavailableFake
         )
         //Act
         val expected = null
-        val result = brokerSource.getMovieByTitleRemote("None")
+        val result = movieExternalBrokerSource.getMovieByTitleRemote("None")
         //Assert
         assertEquals(expected, result)
     }
